@@ -1,50 +1,1875 @@
-<!DOCTYPE html>
+<!doctype html>
 <html lang="en">
 <head>
-<meta charset="UTF-8" />
-<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover" />
-<meta name="theme-color" content="#08080c" />
-<title>Veil Labs</title>
-<meta name="description" content="Veil Labs Inc. A game studio making paranormal games." />
-<meta property="og:title" content="Veil Labs" />
-<meta property="og:description" content="A game studio making paranormal games." />
-<meta property="og:type" content="website" />
-<meta property="og:url" content="https://veillabs.studio" />
-<link rel="icon" type="image/svg+xml" href="favicon.svg" />
-<link rel="preconnect" href="https://fonts.googleapis.com" />
-<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
-<link href="https://fonts.googleapis.com/css2?family=Instrument+Serif:ital@0;1&family=Geist+Mono:wght@400&display=swap" rel="stylesheet" />
-<link rel="stylesheet" href="styles.css" />
+<meta charset="utf-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1" />
+<title>Veil Labs — We make games that linger.</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=VT323&family=Press+Start+2P&family=Monoton&display=swap" rel="stylesheet">
+<style>
+/* VEIL LABS — haunted phosphor CRT */
+:root {
+  --bg: #050806;
+  --bg-2: #0a0f0c;
+  --bg-3: #0f1612;
+  --phos: #39ff7a;
+  --phos-dim: #1a4a2a;
+  --phos-ghost: #39ff7a22;
+  --amber: #ffb020;
+  --blood: #e23a4a;
+  --bone: #d7e5d2;
+  --bone-dim: #6a7a6c;
+  --plastic: #2a4a35;
+  --plastic-lt: #4ea36a;
+  --plastic-dk: #0a1a10;
+  --crt-intensity: 0.35;
+  --scanline-opacity: 0.18;
+}
+
+* { box-sizing: border-box; }
+
+html, body {
+  margin: 0;
+  padding: 0;
+  background: var(--bg);
+  color: var(--bone);
+  font-family: 'VT323', 'Courier New', monospace;
+  font-size: 20px;
+  line-height: 1.35;
+  -webkit-font-smoothing: antialiased;
+  overflow-x: hidden;
+}
+
+body {
+  background:
+    radial-gradient(ellipse at 50% 0%, #0f1f16 0%, #050806 55%, #000 100%),
+    var(--bg);
+  min-height: 100vh;
+}
+
+/* ============ CRT overlay ============ */
+.crt {
+  position: fixed;
+  inset: 0;
+  pointer-events: none;
+  z-index: 9998;
+  mix-blend-mode: normal;
+}
+.crt::before {
+  content: "";
+  position: absolute; inset: 0;
+  background: repeating-linear-gradient(
+    to bottom,
+    rgba(0,0,0, var(--scanline-opacity)) 0px,
+    rgba(0,0,0, var(--scanline-opacity)) 1px,
+    transparent 1px, transparent 3px
+  );
+  opacity: var(--crt-intensity);
+}
+.crt::after {
+  content: "";
+  position: absolute; inset: 0;
+  background: radial-gradient(ellipse at center, transparent 55%, rgba(0,0,0,0.75) 100%);
+  opacity: calc(var(--crt-intensity) * 1.2);
+}
+.crt-flicker {
+  position: fixed; inset: 0; pointer-events: none; z-index: 9999;
+  background: rgba(57, 255, 122, 0.015);
+  animation: flicker 7s infinite steps(60);
+}
+@keyframes flicker {
+  0%, 97%, 100% { opacity: 0; }
+  98% { opacity: 0.4; }
+  98.5% { opacity: 0; }
+  99% { opacity: 0.6; }
+}
+
+/* ============ Type ============ */
+.font-pixel { font-family: 'Press Start 2P', monospace; letter-spacing: 0.02em; }
+.font-mono  { font-family: 'VT323', monospace; }
+.font-heavy { font-family: 'Monoton', 'Press Start 2P', monospace; letter-spacing: 0.02em; }
+
+.phos { color: var(--phos); text-shadow: 0 0 6px rgba(57,255,122,0.6), 0 0 14px rgba(57,255,122,0.25); }
+.phos-dim { color: var(--phos); text-shadow: 0 0 3px rgba(57,255,122,0.4); opacity: 0.8; }
+.amber { color: var(--amber); text-shadow: 0 0 6px rgba(255,176,32,0.5); }
+.bone { color: var(--bone); }
+.blood { color: var(--blood); }
+
+/* ============ Chrome ============ */
+.hud-frame {
+  border: 2px solid var(--phos-dim);
+  background: rgba(10,15,12,0.6);
+  position: relative;
+}
+.hud-frame::before {
+  content: ""; position: absolute; inset: 4px;
+  border: 1px solid rgba(57,255,122,0.15);
+  pointer-events: none;
+}
+
+/* ============ Blinking cursor ============ */
+.cursor::after {
+  content: "▊";
+  color: var(--phos);
+  animation: blink 1s steps(2) infinite;
+  margin-left: 2px;
+}
+@keyframes blink { 50% { opacity: 0; } }
+
+/* ============ Buttons ============ */
+.btn-retro {
+  font-family: 'Press Start 2P', monospace;
+  background: var(--bg-2);
+  color: var(--phos);
+  border: 2px solid var(--phos-dim);
+  padding: 12px 18px;
+  font-size: 11px;
+  letter-spacing: 0.08em;
+  cursor: pointer;
+  position: relative;
+  text-transform: uppercase;
+  transition: all 0.08s;
+}
+.btn-retro:hover {
+  background: var(--phos-dim);
+  color: var(--phos);
+  border-color: var(--phos);
+  box-shadow: 0 0 0 2px var(--bg), 0 0 14px rgba(57,255,122,0.4);
+}
+.btn-retro:active { transform: translate(1px,1px); }
+
+.btn-ghost {
+  font-family: 'VT323', monospace;
+  background: transparent;
+  color: var(--bone);
+  border: 1px solid var(--bone-dim);
+  padding: 4px 10px;
+  font-size: 16px;
+  cursor: pointer;
+  letter-spacing: 0.05em;
+}
+.btn-ghost:hover { border-color: var(--phos); color: var(--phos); }
+
+/* ============ Animations ============ */
+@keyframes scan-sweep {
+  0% { transform: translateY(-100%); }
+  100% { transform: translateY(500%); }
+}
+@keyframes boot-flash {
+  0% { opacity: 0; }
+  10% { opacity: 1; }
+  100% { opacity: 0; }
+}
+@keyframes jitter {
+  0%, 100% { transform: translate(0,0); }
+  25% { transform: translate(-0.5px, 0.5px); }
+  50% { transform: translate(0.5px, -0.5px); }
+  75% { transform: translate(-0.5px, -0.5px); }
+}
+.jitter { animation: jitter 0.12s infinite; }
+
+@keyframes float {
+  0%, 100% { transform: translateY(0); }
+  50% { transform: translateY(-6px); }
+}
+.float { animation: float 4s ease-in-out infinite; }
+
+@keyframes ghost-shimmer {
+  0%, 100% { opacity: 0.3; }
+  50% { opacity: 0.7; }
+}
+
+/* ============ 3D perspective helpers ============ */
+.perspective-1000 { perspective: 1000px; }
+.preserve-3d { transform-style: preserve-3d; }
+.backface-hidden { backface-visibility: hidden; }
+
+/* ============ Scrollbar ============ */
+::-webkit-scrollbar { width: 10px; height: 10px; }
+::-webkit-scrollbar-track { background: var(--bg-2); }
+::-webkit-scrollbar-thumb { background: var(--phos-dim); border: 1px solid var(--bg); }
+::-webkit-scrollbar-thumb:hover { background: var(--phos); }
+
+/* ============ Misc ============ */
+.pixel-border {
+  --sz: 3px;
+  box-shadow:
+    0 calc(var(--sz) * -1) 0 var(--phos-dim),
+    0 var(--sz) 0 var(--phos-dim),
+    calc(var(--sz) * -1) 0 0 var(--phos-dim),
+    var(--sz) 0 0 var(--phos-dim);
+}
+
+.noise {
+  position: absolute; inset: 0; pointer-events: none; opacity: 0.06;
+  background-image: url("data:image/svg+xml;utf8,<svg xmlns='http://www.w3.org/2000/svg' width='200' height='200'><filter id='n'><feTurbulence baseFrequency='0.9' numOctaves='2' stitchTiles='stitch'/></filter><rect width='200' height='200' filter='url(%23n)' opacity='0.7'/></svg>");
+}
+
+.divider-line {
+  height: 1px;
+  background: linear-gradient(90deg, transparent, var(--phos-dim) 20%, var(--phos-dim) 80%, transparent);
+}
+
+.tape-label {
+  background: var(--bone);
+  color: var(--plastic-dk);
+  font-family: 'Press Start 2P', monospace;
+  padding: 2px 8px;
+  font-size: 10px;
+  letter-spacing: 0.1em;
+  display: inline-block;
+}
+
+/* Hide during boot */
+.hidden-during-boot { visibility: hidden; }
+
+</style>
 </head>
 <body>
+<div id="root"></div>
+<div class="crt"></div>
+<div class="crt-flicker"></div>
+<script src="https://unpkg.com/react@18.3.1/umd/react.development.js" integrity="sha384-hD6/rw4ppMLGNu3tX5cjIb+uRZ7UkRJ6BPkLpg4hAu/6onKUg4lLsHAs9EBPT82L" crossorigin="anonymous"></script>
+<script src="https://unpkg.com/react-dom@18.3.1/umd/react-dom.development.js" integrity="sha384-u6aeetuaXnQ38mYT8rp6sbXaQe3NL9t+IBXmnYxwkUI2Hw4bsp2Wvmx4yRQF1uAm" crossorigin="anonymous"></script>
+<script src="https://unpkg.com/@babel/standalone@7.29.0/babel.min.js" integrity="sha384-m08KidiNqLdpJqLq95G/LEi8Qvjl/xUYll3QILypMoQ65QorJ9Lvtp2RXYGBFj1y" crossorigin="anonymous"></script>
+<script type="text/babel" data-presets="react">
+// 3D CSS Apparish Cartridge — N64-style chunky plastic
+const { useState, useRef, useEffect } = React;
 
-<div class="grain"></div>
-<div class="fog fog-1"></div>
-<div class="fog fog-2"></div>
+function Cartridge({ colorway = "ghost-green", size = 1, flippable = true, onInsert, tilt = true, label = "APPARISH", subtitle = "HAUNTED REALITY" }) {
+  const [flipped, setFlipped] = useState(false);
+  const [tilted, setTilted] = useState({ x: 0, y: 0 });
+  const ref = useRef(null);
 
-<main>
-  <div class="stack">
-    <div class="mark" aria-hidden="true">
-      <div class="orb"></div>
-      <div class="ring"></div>
+  const colorways = {
+    "ghost-green": {
+      body: "linear-gradient(145deg, #2a5a3a 0%, #1a3a25 50%, #0f2418 100%)",
+      bodyEdge: "#4ea36a",
+      shadow: "rgba(57,255,122,0.35)",
+      plastic: "rgba(80, 180, 110, 0.55)",
+      translucent: true,
+    },
+    "atomic-purple": {
+      body: "linear-gradient(145deg, #3a2a5a 0%, #221640 100%)",
+      bodyEdge: "#8a6ad6",
+      shadow: "rgba(170,120,255,0.35)",
+      plastic: "rgba(140, 100, 220, 0.55)",
+      translucent: true,
+    },
+    "blood-red": {
+      body: "linear-gradient(145deg, #5a1a1a 0%, #2a0a0a 100%)",
+      bodyEdge: "#d63a3a",
+      shadow: "rgba(220, 60, 60, 0.4)",
+      plastic: "rgba(200, 40, 40, 0.6)",
+      translucent: true,
+    },
+    "classic-gray": {
+      body: "linear-gradient(145deg, #3a3a3a 0%, #1a1a1a 100%)",
+      bodyEdge: "#888",
+      shadow: "rgba(100,100,100,0.4)",
+      plastic: "#2a2a2a",
+      translucent: false,
+    },
+    "bone": {
+      body: "linear-gradient(145deg, #d0d0c0 0%, #8a8a80 100%)",
+      bodyEdge: "#f0f0e0",
+      shadow: "rgba(220,220,200,0.3)",
+      plastic: "#b0b0a0",
+      translucent: false,
+    }
+  };
+  const cw = colorways[colorway] || colorways["ghost-green"];
+
+  // Mouse-tilt
+  const handleMove = (e) => {
+    if (!tilt || !ref.current || flipped) return;
+    const r = ref.current.getBoundingClientRect();
+    const px = (e.clientX - r.left) / r.width - 0.5;
+    const py = (e.clientY - r.top) / r.height - 0.5;
+    setTilted({ x: py * -18, y: px * 22 });
+  };
+  const handleLeave = () => setTilted({ x: 0, y: 0 });
+
+  // SCALE
+  const W = 240 * size;
+  const H = 320 * size;
+  const D = 32 * size; // depth
+
+  return (
+    <div
+      style={{ perspective: `${1400 * size}px`, display: "inline-block", cursor: flippable ? "pointer" : "default" }}
+      onMouseMove={handleMove}
+      onMouseLeave={handleLeave}
+      onClick={() => flippable && setFlipped(f => !f)}
+    >
+      <div
+        ref={ref}
+        style={{
+          width: W, height: H,
+          position: "relative",
+          transformStyle: "preserve-3d",
+          transform: `rotateX(${tilted.x}deg) rotateY(${tilted.y}deg)`,
+          transition: "transform 0.55s cubic-bezier(.2,.8,.2,1)",
+          filter: `drop-shadow(0 25px 30px ${cw.shadow})`,
+        }}
+      >
+        {/* FRONT or BACK — render one at a time to avoid backface-visibility quirks */}
+        {!flipped ? (
+          <CartFace front cw={cw} W={W} H={H} D={D} label={label} subtitle={subtitle} />
+        ) : (
+          <CartFace back cw={cw} W={W} H={H} D={D} />
+        )}
+        {/* LEFT SIDE */}
+        <div style={{
+          position: "absolute",
+          width: D, height: H,
+          left: 0, top: 0,
+          background: cw.bodyEdge,
+          transform: `rotateY(-90deg) translateZ(0px) translateX(${-D/2}px)`,
+          transformOrigin: "left center",
+          boxShadow: "inset -4px 0 8px rgba(0,0,0,0.5)",
+        }} />
+        {/* RIGHT SIDE */}
+        <div style={{
+          position: "absolute",
+          width: D, height: H,
+          right: 0, top: 0,
+          background: cw.bodyEdge,
+          transform: `rotateY(90deg) translateZ(0px) translateX(${D/2}px)`,
+          transformOrigin: "right center",
+          boxShadow: "inset 4px 0 8px rgba(0,0,0,0.5)",
+        }} />
+        {/* TOP */}
+        <div style={{
+          position: "absolute",
+          width: W, height: D,
+          top: 0, left: 0,
+          background: cw.bodyEdge,
+          transform: `rotateX(90deg) translateZ(${D/2}px) translateY(${-D/2}px)`,
+          transformOrigin: "top center",
+          boxShadow: "inset 0 -4px 8px rgba(0,0,0,0.5)",
+        }} />
+        {/* BOTTOM (connector) */}
+        <div style={{
+          position: "absolute",
+          width: W, height: D,
+          bottom: 0, left: 0,
+          background: "#1a1a1a",
+          transform: `rotateX(-90deg) translateZ(${D/2}px) translateY(${D/2}px)`,
+          transformOrigin: "bottom center",
+          display: "flex", alignItems: "center", justifyContent: "space-around",
+          padding: "0 12px",
+        }}>
+          {Array.from({ length: 12 }).map((_, i) => (
+            <div key={i} style={{ width: 4, height: D * 0.55, background: "#d4a94a", boxShadow: "0 0 1px #000" }} />
+          ))}
+        </div>
+      </div>
     </div>
+  );
+}
 
-    <h1>Veil Labs</h1>
-    <p class="tag">A game studio making paranormal games.</p>
+function CartFace({ front, back, cw, W, H, D, label, subtitle }) {
+  // Each face: rotate first, THEN translate along its own local z forward.
+  // Back rotated 180 + translateZ(D/2) lands at world -D/2 (truly on the back).
+  const rotation = front ? "rotateY(0deg)" : "rotateY(180deg)";
+  return (
+    <div style={{
+      position: "absolute", top: 0, left: 0, width: W, height: H,
+      transform: `${rotation} translateZ(${D/2}px)`,
+      backfaceVisibility: "hidden",
+      background: cw.body,
+      border: `2px solid ${cw.bodyEdge}`,
+      borderRadius: "10px 10px 4px 4px",
+      overflow: "hidden",
+      boxShadow: cw.translucent
+        ? `inset 0 0 80px ${cw.plastic}, inset 0 6px 0 rgba(255,255,255,0.15)`
+        : `inset 0 6px 0 rgba(255,255,255,0.1), inset 0 -6px 0 rgba(0,0,0,0.3)`,
+    }}>
+      {/* ridged top */}
+      <div style={{
+        position: "absolute", top: 0, left: 0, right: 0, height: H * 0.12,
+        background: `repeating-linear-gradient(90deg, ${cw.bodyEdge} 0 4px, transparent 4px 8px)`,
+        opacity: 0.25,
+      }} />
+      {/* brand notch top */}
+      <div style={{
+        position: "absolute", top: 12, left: "50%", transform: "translateX(-50%)",
+        fontFamily: "'Press Start 2P', monospace", fontSize: 8, letterSpacing: "0.3em",
+        color: cw.translucent ? "rgba(215,229,210,0.55)" : "rgba(255,255,255,0.55)",
+      }}>
+        VEIL·LABS
+      </div>
 
-    <div class="games">
-      <a class="game" href="https://appari.sh" target="_blank" rel="noopener">
-        <span class="game-name">Apparish</span>
-        <span class="game-arrow" aria-hidden="true">→</span>
-      </a>
+      {front ? <CartFront label={label} subtitle={subtitle} cw={cw} /> : <CartBack cw={cw} />}
+
+      {/* screw wells */}
+      <Screw x={12} y={12} />
+      <Screw x={W - 22} y={12} />
+      <Screw x={12} y={H - 22} />
+      <Screw x={W - 22} y={H - 22} />
+
+      {/* translucent highlight */}
+      {cw.translucent && (
+        <div style={{
+          position: "absolute", top: 0, left: 0, width: "55%", height: "100%",
+          background: "linear-gradient(120deg, rgba(255,255,255,0.14) 0%, transparent 45%)",
+          pointerEvents: "none",
+        }} />
+      )}
     </div>
-  </div>
+  );
+}
 
-  <footer>
-    <span>&copy; 2026 Veil Labs Inc.</span>
-    <a href="mailto:ahmed@appari.sh">ahmed@appari.sh</a>
-  </footer>
-</main>
+function Screw({ x, y }) {
+  return (
+    <div style={{
+      position: "absolute", left: x, top: y, width: 10, height: 10,
+      borderRadius: "50%",
+      background: "radial-gradient(circle at 35% 35%, #666 0%, #111 80%)",
+      boxShadow: "inset 0 0 0 1px #000",
+    }}>
+      <div style={{
+        position: "absolute", top: "50%", left: 1, right: 1, height: 1,
+        background: "#000", transform: "translateY(-0.5px) rotate(-30deg)",
+      }} />
+    </div>
+  );
+}
 
+function CartFront({ label, subtitle, cw }) {
+  return (
+    <div style={{
+      position: "absolute", top: "16%", left: "10%", right: "10%", bottom: "8%",
+      background: "#0a140e",
+      border: "2px solid #1a3a25",
+      borderRadius: 4,
+      padding: 12,
+      display: "flex", flexDirection: "column", justifyContent: "space-between",
+      overflow: "hidden",
+      boxShadow: "inset 0 0 30px rgba(0,0,0,0.8), inset 0 0 0 1px rgba(57,255,122,0.15)",
+    }}>
+      {/* label art — ghost */}
+      <div style={{ flex: 1, position: "relative", display: "flex", alignItems: "center", justifyContent: "center" }}>
+        <svg viewBox="0 0 100 100" style={{ width: "90%", height: "90%" }}>
+          <defs>
+            <radialGradient id="ghostGlow" cx="50%" cy="45%" r="50%">
+              <stop offset="0%" stopColor="#39ff7a" stopOpacity="0.9"/>
+              <stop offset="60%" stopColor="#39ff7a" stopOpacity="0.15"/>
+              <stop offset="100%" stopColor="#39ff7a" stopOpacity="0"/>
+            </radialGradient>
+          </defs>
+          <circle cx="50" cy="50" r="45" fill="url(#ghostGlow)" />
+          {/* ghost silhouette */}
+          <path
+            d="M30 42 Q30 22 50 22 Q70 22 70 42 L70 74 Q68 70 64 74 Q60 78 56 74 Q52 70 48 74 Q44 78 40 74 Q36 70 32 74 L30 72 Z"
+            fill="#0a140e"
+            stroke="#39ff7a"
+            strokeWidth="1.2"
+          />
+          {/* eyes */}
+          <ellipse cx="42" cy="44" rx="2.5" ry="3.5" fill="#39ff7a" />
+          <ellipse cx="58" cy="44" rx="2.5" ry="3.5" fill="#39ff7a" />
+          {/* scanline on label */}
+          <g opacity="0.3">
+            {Array.from({length: 10}).map((_, i) => (
+              <line key={i} x1="0" y1={i*10} x2="100" y2={i*10} stroke="#39ff7a" strokeWidth="0.3"/>
+            ))}
+          </g>
+        </svg>
+      </div>
+
+      {/* title block */}
+      <div style={{ textAlign: "center", borderTop: "1px solid #1a3a25", paddingTop: 8, padding: "8px 4px 0" }}>
+        <div style={{
+          fontFamily: "'Monoton', 'Press Start 2P', monospace",
+          fontSize: 22, color: "#39ff7a", letterSpacing: "0.01em",
+          textShadow: "0 0 8px rgba(57,255,122,0.7)",
+          lineHeight: 1,
+          whiteSpace: "nowrap",
+        }}>
+          {label}
+        </div>
+        <div style={{
+          fontFamily: "'Press Start 2P', monospace",
+          fontSize: 7, color: "#39ff7a", opacity: 0.7, letterSpacing: "0.3em", marginTop: 4,
+        }}>
+          {subtitle}
+        </div>
+      </div>
+    </div>
+  );
+}
+
+function CartBack({ cw }) {
+  return (
+    <div style={{
+      position: "absolute", top: "14%", left: "10%", right: "10%", bottom: "8%",
+      padding: 10,
+      display: "flex", flexDirection: "column", gap: 6,
+      color: cw.translucent ? "rgba(215,229,210,0.7)" : "rgba(255,255,255,0.75)",
+      fontFamily: "'VT323', monospace",
+      fontSize: 11,
+    }}>
+      <div style={{
+        fontFamily: "'Press Start 2P', monospace", fontSize: 8, opacity: 0.85,
+        borderBottom: "1px solid currentColor", paddingBottom: 4, letterSpacing: "0.2em",
+      }}>
+        VL-001 · APPARISH
+      </div>
+      <div style={{ lineHeight: 1.15 }}>
+        A paranormal reality game. Players physically explore haunted places and uncover AI-generated spirits tied to local history and folklore.
+      </div>
+      <div style={{
+        marginTop: "auto",
+        border: "1px solid currentColor",
+        padding: 5,
+        fontSize: 9,
+        lineHeight: 1.2,
+      }}>
+        <div style={{ fontFamily: "'Press Start 2P', monospace", fontSize: 6, marginBottom: 3, letterSpacing: "0.15em" }}>WARNING</div>
+        Contains persistent characters who remember you. Neglect at your own risk.
+      </div>
+      <div style={{ display: "flex", justifyContent: "space-between", fontSize: 10, marginTop: 2 }}>
+        <span>© 2026 VEIL LABS</span>
+        <span>MADE IN USA</span>
+      </div>
+    </div>
+  );
+}
+
+window.Cartridge = Cartridge;
+
+</script>
+<script type="text/babel" data-presets="react">
+// Boot sequence + CRT utilities
+const { useState: useStateBoot, useEffect: useEffectBoot } = React;
+
+function BootSequence({ onDone, skip }) {
+  const [phase, setPhase] = useStateBoot(0); // 0 black, 1 warning, 2 VL logo, 3 done
+  const [lineIdx, setLineIdx] = useStateBoot(0);
+
+  useEffectBoot(() => {
+    if (skip) { onDone?.(); return; }
+    const timers = [];
+    timers.push(setTimeout(() => setPhase(1), 350));
+    timers.push(setTimeout(() => setPhase(2), 2600));
+    timers.push(setTimeout(() => setPhase(3), 4600));
+    timers.push(setTimeout(() => onDone?.(), 5200));
+    return () => timers.forEach(clearTimeout);
+  }, [skip]);
+
+  useEffectBoot(() => {
+    if (phase !== 1) return;
+    const id = setInterval(() => setLineIdx(i => Math.min(i + 1, 7)), 180);
+    return () => clearInterval(id);
+  }, [phase]);
+
+  if (skip || phase === 3) return null;
+
+  return (
+    <div style={{
+      position: "fixed", inset: 0, background: "#000", zIndex: 9000,
+      color: "var(--phos)",
+      fontFamily: "'VT323', monospace",
+      display: "flex", alignItems: "center", justifyContent: "center",
+      overflow: "hidden",
+    }}>
+      {/* scanlines */}
+      <div style={{
+        position: "absolute", inset: 0,
+        background: "repeating-linear-gradient(to bottom, rgba(0,0,0,0.45) 0 1px, transparent 1px 3px)",
+        pointerEvents: "none", zIndex: 2,
+      }} />
+      {/* vignette */}
+      <div style={{
+        position: "absolute", inset: 0,
+        background: "radial-gradient(ellipse at center, transparent 40%, #000 100%)",
+        pointerEvents: "none", zIndex: 2,
+      }} />
+
+      {phase === 0 && (
+        <div style={{ color: "var(--phos)", fontSize: 40, letterSpacing: "0.3em" }}>
+          <span style={{animation: "ghost-shimmer 0.4s infinite"}}>● ● ●</span>
+        </div>
+      )}
+
+      {phase === 1 && (
+        <div style={{ width: "min(720px, 85vw)", padding: 20 }}>
+          <div style={{
+            fontFamily: "'Press Start 2P', monospace", fontSize: 14, letterSpacing: "0.2em",
+            color: "#ffb020", textShadow: "0 0 8px rgba(255,176,32,0.6)",
+            marginBottom: 18,
+          }}>▲ SYSTEM BOOT — V.001</div>
+          {[
+            "> POWER ON ................................. [OK]",
+            "> MEMORY CHECK ......................... 64MB OK",
+            "> CARTRIDGE DETECTED ............ VL-001",
+            "> READING ROM ....................... APPARISH",
+            "> INIT NEURAL ENGINE ................... [OK]",
+            "> LOADING HAUNTED DATABASE .... [OK]",
+            "> CONNECTING TO THE VEIL ............... ...",
+            "> SIGNAL ACQUIRED. PROCEED.",
+          ].slice(0, lineIdx + 1).map((line, i, arr) => (
+            <div key={i} style={{
+              fontSize: 20,
+              color: "var(--phos)",
+              textShadow: "0 0 4px rgba(57,255,122,0.7)",
+            }}>
+              {line}{i === arr.length - 1 && lineIdx < 7 ? <span className="cursor"/> : null}
+            </div>
+          ))}
+        </div>
+      )}
+
+      {phase === 2 && (
+        <div style={{ textAlign: "center", animation: "boot-flash 1.8s ease-out forwards" }}>
+          <div style={{
+            fontFamily: "'Monoton', serif",
+            fontSize: "clamp(60px, 12vw, 140px)",
+            letterSpacing: "0.08em",
+            color: "var(--phos)",
+            textShadow: "0 0 20px rgba(57,255,122,0.9), 0 0 40px rgba(57,255,122,0.4)",
+          }}>VEIL LABS</div>
+          <div style={{
+            fontFamily: "'Press Start 2P', monospace",
+            fontSize: 11, letterSpacing: "0.4em", color: "var(--phos)", opacity: 0.7, marginTop: 14,
+          }}>
+            LICENSED BY THE OTHER SIDE
+          </div>
+        </div>
+      )}
+    </div>
+  );
+}
+
+window.BootSequence = BootSequence;
+
+</script>
+<script type="text/babel" data-presets="react">
+// Page sections for the Veil Labs site
+const { useState: useStateS, useEffect: useEffectS, useRef: useRefS } = React;
+
+/* =========================================================
+   NAV
+========================================================= */
+function Nav({ page, setPage }) {
+  const items = [
+    ["HOME", "home"],
+    ["CARTRIDGES", "cartridges"],
+    ["APPARISH", "apparish"],
+    ["PRESS", "press"],
+  ];
+  return (
+    <nav style={{
+      position: "sticky", top: 0, zIndex: 200,
+      background: "linear-gradient(180deg, #050806 0%, #050806 80%, rgba(5,8,6,0.6) 100%)",
+      borderBottom: "2px solid var(--phos-dim)",
+      padding: "10px 20px",
+      display: "flex", alignItems: "center", justifyContent: "space-between",
+      backdropFilter: "blur(4px)",
+    }}>
+      <button onClick={() => setPage("home")} style={{ background: "none", border: "none", cursor: "pointer", display: "flex", alignItems: "center", gap: 10 }}>
+        <VeilLogo size={26} />
+        <div style={{ fontFamily: "'Press Start 2P', monospace", fontSize: 12, color: "var(--phos)", letterSpacing: "0.15em", textShadow: "0 0 6px rgba(57,255,122,0.5)" }}>
+          VEIL LABS
+        </div>
+      </button>
+      <div style={{ display: "flex", gap: 4, alignItems: "center" }}>
+        {items.map(([label, key]) => (
+          <button
+            key={key}
+            onClick={() => setPage(key)}
+            className="font-pixel"
+            style={{
+              background: page === key ? "var(--phos-dim)" : "transparent",
+              color: page === key ? "var(--phos)" : "var(--bone)",
+              border: page === key ? "1px solid var(--phos)" : "1px solid transparent",
+              padding: "8px 12px",
+              fontSize: 10,
+              letterSpacing: "0.1em",
+              cursor: "pointer",
+              fontFamily: "'Press Start 2P', monospace",
+              textShadow: page === key ? "0 0 6px rgba(57,255,122,0.6)" : "none",
+            }}
+          >
+            {page === key ? "▶ " : "  "}{label}
+          </button>
+        ))}
+      </div>
+      <div className="font-mono" style={{ color: "var(--phos)", fontSize: 14, letterSpacing: "0.2em", opacity: 0.75 }}>
+        <span className="cursor">PLAYER 1</span>
+      </div>
+    </nav>
+  );
+}
+
+function VeilLogo({ size = 24, color = "var(--phos)" }) {
+  return (
+    <svg width={size} height={size} viewBox="0 0 32 32" style={{ filter: "drop-shadow(0 0 4px rgba(57,255,122,0.6))" }}>
+      {/* Stylized V + moon glyph */}
+      <polygon points="4,6 10,6 16,22 22,6 28,6 19,28 13,28" fill={color} />
+      <circle cx="16" cy="14" r="3" fill="none" stroke={color} strokeWidth="1.5" />
+      <circle cx="17" cy="13" r="1.5" fill="#050806" />
+    </svg>
+  );
+}
+
+/* =========================================================
+   HOME
+========================================================= */
+function HomePage({ setPage, colorway }) {
+  return (
+    <div style={{ maxWidth: 1280, margin: "0 auto", padding: "30px 24px 80px" }}>
+      <Hero setPage={setPage} colorway={colorway} />
+      <MissionStrip />
+      <ShelfPreview setPage={setPage} colorway={colorway} />
+      <PlayerOneDialogue />
+    </div>
+  );
+}
+
+function Hero({ setPage, colorway }) {
+  const [pressed, setPressed] = useStateS(false);
+  useEffectS(() => {
+    const onKey = (e) => {
+      if (e.key === "Enter" || e.key === " ") { setPressed(true); setTimeout(() => setPage("apparish"), 400); }
+    };
+    window.addEventListener("keydown", onKey);
+    return () => window.removeEventListener("keydown", onKey);
+  }, []);
+
+  return (
+    <div style={{
+      position: "relative",
+      border: "2px solid var(--phos-dim)",
+      padding: "30px 20px 40px",
+      background: "radial-gradient(ellipse at 50% 30%, #0f1f16 0%, #050806 65%)",
+      overflow: "hidden",
+    }}>
+      {/* corner brackets */}
+      <CornerBrackets />
+      {/* bg moon */}
+      <div style={{ position: "absolute", top: 40, right: 60, width: 220, height: 220, borderRadius: "50%",
+        background: "radial-gradient(circle at 35% 30%, #1a3a25 0%, #0a1a10 60%, transparent 100%)",
+        boxShadow: "0 0 60px rgba(57,255,122,0.15)",
+        opacity: 0.7,
+        pointerEvents: "none",
+      }} />
+      {/* bg grid */}
+      <div style={{
+        position: "absolute", inset: 0,
+        backgroundImage: "linear-gradient(rgba(57,255,122,0.05) 1px, transparent 1px), linear-gradient(90deg, rgba(57,255,122,0.05) 1px, transparent 1px)",
+        backgroundSize: "40px 40px",
+        maskImage: "radial-gradient(ellipse at center, black 0%, transparent 70%)",
+        WebkitMaskImage: "radial-gradient(ellipse at center, black 0%, transparent 70%)",
+        pointerEvents: "none",
+      }} />
+
+      <div style={{ display: "grid", gridTemplateColumns: "1.3fr 1fr", gap: 30, alignItems: "center", position: "relative", zIndex: 1 }}>
+        <div>
+          <div className="font-pixel" style={{ fontSize: 10, color: "var(--amber)", letterSpacing: "0.3em", marginBottom: 18 }}>
+            ▲ VEIL LABS · EST. 2025
+          </div>
+          <h1 className="font-heavy" style={{
+            fontSize: "clamp(56px, 9vw, 128px)",
+            lineHeight: 0.92,
+            margin: 0,
+            color: "var(--phos)",
+            textShadow: "0 0 14px rgba(57,255,122,0.7), 0 4px 0 #0a1a10",
+            letterSpacing: "0.02em",
+          }}>
+            WE MAKE<br/>GAMES THAT<br/>LINGER.
+          </h1>
+          <div className="font-mono" style={{ fontSize: 22, color: "var(--bone)", marginTop: 20, maxWidth: 540, lineHeight: 1.25 }}>
+            Veil Labs is a studio building immersive, AI-native games — where every character remembers you and the world you play in is the one outside your window.
+          </div>
+          <div style={{ display: "flex", gap: 14, marginTop: 28, flexWrap: "wrap" }}>
+            <button
+              className="btn-retro"
+              onClick={() => { setPressed(true); setTimeout(() => setPage("apparish"), 300); }}
+              style={pressed ? { transform: "translate(1px,1px)" } : {}}
+            >
+              ▶ PRESS START
+            </button>
+            <button className="btn-retro" onClick={() => setPage("cartridges")} style={{ color: "var(--bone)", borderColor: "var(--bone-dim)" }}>
+              ◉ VIEW CARTRIDGES
+            </button>
+          </div>
+          <div className="font-mono" style={{ marginTop: 20, fontSize: 16, color: "var(--bone-dim)", letterSpacing: "0.1em" }}>
+            PRESS [ENTER] / [SPACE] TO BEGIN<span className="cursor"/>
+          </div>
+        </div>
+
+        <div style={{ display: "flex", justifyContent: "center", alignItems: "center" }}>
+          <div className="float">
+            <Cartridge colorway={colorway} size={0.95} />
+          </div>
+        </div>
+      </div>
+
+      {/* HUD strip */}
+      <div style={{
+        marginTop: 30,
+        display: "flex", justifyContent: "space-between", alignItems: "center",
+        borderTop: "1px dashed var(--phos-dim)",
+        paddingTop: 14,
+        fontFamily: "'VT323', monospace",
+        fontSize: 16,
+      }}>
+        <HudStat label="TITLES" value="01" />
+        <HudStat label="STATUS" value="SHIPPING" flash />
+        <HudStat label="SIGNAL" value="▊▊▊▊▊▊▁▁" />
+        <HudStat label="YEAR" value="2026" />
+      </div>
+    </div>
+  );
+}
+
+function HudStat({ label, value, flash }) {
+  return (
+    <div style={{ display: "flex", flexDirection: "column", gap: 2 }}>
+      <span style={{ color: "var(--bone-dim)", fontSize: 12, letterSpacing: "0.2em" }}>{label}</span>
+      <span className={flash ? "" : ""} style={{
+        color: "var(--phos)", textShadow: "0 0 4px rgba(57,255,122,0.5)",
+        fontSize: 18, letterSpacing: "0.1em",
+        animation: flash ? "ghost-shimmer 1.4s ease-in-out infinite" : "none",
+      }}>
+        {value}
+      </span>
+    </div>
+  );
+}
+
+function CornerBrackets() {
+  const B = ({ style }) => <div style={{ position: "absolute", width: 14, height: 14, borderColor: "var(--phos)", borderStyle: "solid", borderWidth: 0, ...style }} />;
+  return (
+    <>
+      <B style={{ top: 6, left: 6, borderTopWidth: 2, borderLeftWidth: 2 }} />
+      <B style={{ top: 6, right: 6, borderTopWidth: 2, borderRightWidth: 2 }} />
+      <B style={{ bottom: 6, left: 6, borderBottomWidth: 2, borderLeftWidth: 2 }} />
+      <B style={{ bottom: 6, right: 6, borderBottomWidth: 2, borderRightWidth: 2 }} />
+    </>
+  );
+}
+
+/* =========================================================
+   MISSION
+========================================================= */
+function MissionStrip() {
+  return (
+    <div style={{ marginTop: 60, display: "grid", gridTemplateColumns: "repeat(3, 1fr)", gap: 18 }}>
+      {[
+        {
+          kicker: "01 / MISSION",
+          title: "BUILD WORLDS THAT REACH BACK",
+          body: "We build games where the characters know you're there. Every NPC has memory, voice, and agency. You leave a mark; they keep score.",
+        },
+        {
+          kicker: "02 / METHOD",
+          title: "AI ON-DEVICE. ALWAYS.",
+          body: "Ghost generation, voice, imagery, and story writing run locally on Apple's neural engine. No per-call costs. No server lag. Real autonomy at scale.",
+        },
+        {
+          kicker: "03 / CANON",
+          title: "THE REAL WORLD IS THE LEVEL",
+          body: "Our games use real geography, real folklore, real history. Your neighborhood is the map. The haunted house down the street is a boss fight.",
+        },
+      ].map((card, i) => (
+        <div key={i} className="hud-frame" style={{ padding: 18, minHeight: 200, position: "relative" }}>
+          <div className="font-pixel" style={{ fontSize: 9, color: "var(--amber)", letterSpacing: "0.25em", marginBottom: 12 }}>
+            {card.kicker}
+          </div>
+          <div className="font-pixel" style={{ fontSize: 13, color: "var(--phos)", letterSpacing: "0.06em", lineHeight: 1.35, marginBottom: 12, textShadow: "0 0 5px rgba(57,255,122,0.5)" }}>
+            {card.title}
+          </div>
+          <div className="font-mono" style={{ color: "var(--bone)", fontSize: 18, lineHeight: 1.3 }}>
+            {card.body}
+          </div>
+        </div>
+      ))}
+    </div>
+  );
+}
+
+/* =========================================================
+   SHELF PREVIEW
+========================================================= */
+function ShelfPreview({ setPage, colorway }) {
+  return (
+    <div style={{ marginTop: 70 }}>
+      <SectionHeader kicker="— LIBRARY" title="THE CARTRIDGE SHELF" />
+      <div style={{ fontFamily: "'VT323', monospace", color: "var(--bone)", fontSize: 20, maxWidth: 620, marginBottom: 28 }}>
+        Each Veil Labs game ships as a cartridge. One on the shelf, more in development. Click to inspect.
+      </div>
+      <Shelf setPage={setPage} colorway={colorway} preview />
+    </div>
+  );
+}
+
+function SectionHeader({ kicker, title, align = "left" }) {
+  return (
+    <div style={{ textAlign: align, marginBottom: 10 }}>
+      <div className="font-pixel" style={{ fontSize: 10, color: "var(--amber)", letterSpacing: "0.3em", marginBottom: 10 }}>
+        {kicker}
+      </div>
+      <h2 className="font-heavy" style={{
+        fontSize: "clamp(36px, 5vw, 64px)", margin: 0,
+        color: "var(--phos)", textShadow: "0 0 10px rgba(57,255,122,0.5), 0 3px 0 #0a1a10",
+        letterSpacing: "0.03em",
+      }}>
+        {title}
+      </h2>
+    </div>
+  );
+}
+
+/* =========================================================
+   SHELF (cartridges page)
+========================================================= */
+function Shelf({ setPage, colorway, preview = false }) {
+  const slots = [
+    { type: "cart", label: "APPARISH", subtitle: "HAUNTED REALITY", status: "AVAILABLE", code: "VL-001", colorway, year: "2026" },
+    { type: "empty", label: "UNTITLED", subtitle: "CLASSIFIED", status: "DEVELOPMENT", code: "VL-002", year: "2027" },
+    { type: "empty", label: "UNTITLED", subtitle: "CLASSIFIED", status: "CONCEPT", code: "VL-003", year: "20XX" },
+  ];
+  if (preview) slots.length = 3;
+
+  return (
+    <div style={{ position: "relative" }}>
+      <div style={{
+        border: "2px solid var(--phos-dim)",
+        background: "linear-gradient(180deg, #0a1512 0%, #050806 100%)",
+        padding: "30px 24px 14px",
+        position: "relative",
+      }}>
+        <CornerBrackets />
+        <div style={{ display: "grid", gridTemplateColumns: "repeat(3, 1fr)", gap: 24, alignItems: "end" }}>
+          {slots.map((s, i) => (
+            <SlotItem key={i} slot={s} onClick={s.type === "cart" ? () => setPage("apparish") : null} />
+          ))}
+        </div>
+        {/* wood-like shelf base */}
+        <div style={{
+          marginTop: 22, height: 18,
+          background: "repeating-linear-gradient(90deg, #1a2a20 0 4px, #0a1510 4px 8px)",
+          borderTop: "2px solid var(--phos-dim)",
+          borderBottom: "2px solid #000",
+          boxShadow: "0 6px 16px rgba(0,0,0,0.6)",
+        }} />
+        <div style={{
+          fontFamily: "'VT323', monospace", fontSize: 14, color: "var(--bone-dim)",
+          textAlign: "center", marginTop: 10, letterSpacing: "0.2em",
+        }}>
+          — VEIL LABS CATALOGUE · 01 OF 01 SHIPPING ·  03 SLOTS TOTAL —
+        </div>
+      </div>
+    </div>
+  );
+}
+
+function SlotItem({ slot, onClick }) {
+  const [hover, setHover] = useStateS(false);
+  if (slot.type === "empty") {
+    return (
+      <div
+        onMouseEnter={() => setHover(true)}
+        onMouseLeave={() => setHover(false)}
+        style={{
+          display: "flex", flexDirection: "column", alignItems: "center", gap: 14,
+        }}
+      >
+        <div style={{
+          width: 220, height: 295,
+          border: "2px dashed var(--phos-dim)",
+          display: "flex", flexDirection: "column", alignItems: "center", justifyContent: "center",
+          gap: 8, color: "var(--bone-dim)",
+          background: "rgba(57,255,122,0.02)",
+        }}>
+          <div style={{ fontSize: 42, opacity: 0.25 }}>▒</div>
+          <div className="font-pixel" style={{ fontSize: 9, letterSpacing: "0.2em", color: "var(--amber)", opacity: 0.8 }}>
+            {slot.status}
+          </div>
+          <div className="font-mono" style={{ fontSize: 14, letterSpacing: "0.2em", opacity: 0.6 }}>
+            {slot.code}
+          </div>
+          <div className="font-mono" style={{ fontSize: 12, opacity: 0.5, maxWidth: 160, textAlign: "center", lineHeight: 1.2, marginTop: 4 }}>
+            ENCRYPTED<span className="cursor"/>
+          </div>
+        </div>
+        <CartCaption slot={slot} dimmed />
+      </div>
+    );
+  }
+  return (
+    <div
+      style={{ display: "flex", flexDirection: "column", alignItems: "center", gap: 14, cursor: onClick ? "pointer" : "default" }}
+      onMouseEnter={() => setHover(true)}
+      onMouseLeave={() => setHover(false)}
+      onClick={onClick}
+    >
+      <div style={{ transform: hover ? "translateY(-8px)" : "none", transition: "transform 0.25s" }}>
+        <Cartridge colorway={slot.colorway || "ghost-green"} size={0.92} flippable={false} label={slot.label} subtitle={slot.subtitle} />
+      </div>
+      <CartCaption slot={slot} />
+    </div>
+  );
+}
+
+function CartCaption({ slot, dimmed }) {
+  const color = dimmed ? "var(--bone-dim)" : "var(--phos)";
+  return (
+    <div style={{ textAlign: "center" }}>
+      <div className="font-pixel" style={{ fontSize: 10, color, letterSpacing: "0.15em", textShadow: dimmed ? "none" : "0 0 4px rgba(57,255,122,0.5)" }}>
+        {slot.label}
+      </div>
+      <div className="font-mono" style={{ fontSize: 14, color: "var(--bone-dim)", letterSpacing: "0.2em", marginTop: 4 }}>
+        {slot.code} · {slot.year}
+      </div>
+      <div className="font-mono" style={{
+        fontSize: 12, marginTop: 6,
+        color: slot.status === "AVAILABLE" ? "var(--phos)" : "var(--amber)",
+        letterSpacing: "0.2em",
+        border: "1px solid currentColor",
+        display: "inline-block", padding: "2px 8px",
+      }}>
+        {slot.status}
+      </div>
+    </div>
+  );
+}
+
+/* =========================================================
+   PLAYER 1 DIALOGUE
+========================================================= */
+function PlayerOneDialogue() {
+  return (
+    <div style={{ marginTop: 70 }}>
+      <div className="hud-frame" style={{ padding: "22px 24px", display: "grid", gridTemplateColumns: "auto 1fr", gap: 20, alignItems: "center" }}>
+        <div style={{
+          width: 72, height: 72, border: "2px solid var(--phos)",
+          background: "#0a1510",
+          display: "flex", alignItems: "center", justifyContent: "center",
+          fontFamily: "'Press Start 2P', monospace", fontSize: 20, color: "var(--phos)",
+          textShadow: "0 0 6px rgba(57,255,122,0.6)",
+        }}>VL</div>
+        <div>
+          <div className="font-pixel" style={{ fontSize: 11, color: "var(--amber)", letterSpacing: "0.2em", marginBottom: 6 }}>
+            ◆ TRANSMISSION FROM THE STUDIO
+          </div>
+          <div className="font-mono" style={{ fontSize: 20, color: "var(--bone)", lineHeight: 1.3 }}>
+            "We make games that reach out of the screen. Characters with memory. Worlds that use the one you already live in. Experiences you carry with you after you put the phone down."
+          </div>
+        </div>
+      </div>
+    </div>
+  );
+}
+
+/* =========================================================
+   CARTRIDGES PAGE
+========================================================= */
+function CartridgesPage({ setPage, colorway }) {
+  return (
+    <div style={{ maxWidth: 1280, margin: "0 auto", padding: "30px 24px 80px" }}>
+      <SectionHeader kicker="— CATALOGUE" title="CARTRIDGES" />
+      <div className="font-mono" style={{ color: "var(--bone)", fontSize: 20, maxWidth: 720, marginBottom: 30 }}>
+        Each Veil Labs game is released as a cartridge. One is shipping. More are in the vault. Click a cartridge to learn more — hover to tilt, click the shipped cart to flip the back.
+      </div>
+      <Shelf setPage={setPage} colorway={colorway} />
+      <div style={{ marginTop: 40, display: "grid", gridTemplateColumns: "1fr 1fr", gap: 18 }}>
+        <RomSpec title="HARDWARE" rows={[
+          ["PLATFORM", "iOS · iPadOS"],
+          ["NEURAL", "APPLE SILICON"],
+          ["STORAGE", "ON-DEVICE"],
+          ["NETWORK", "OPTIONAL"],
+        ]} />
+        <RomSpec title="CARTRIDGE SPEC" rows={[
+          ["FORMAT", "VL-ROM / 64MBit"],
+          ["REGION", "WORLDWIDE"],
+          ["SAVE DATA", "PERSISTENT"],
+          ["MULTIPLAYER", "ASYNC · STEAL"],
+        ]} />
+      </div>
+    </div>
+  );
+}
+
+function RomSpec({ title, rows }) {
+  return (
+    <div className="hud-frame" style={{ padding: 18 }}>
+      <div className="font-pixel" style={{ fontSize: 11, color: "var(--phos)", letterSpacing: "0.2em", marginBottom: 14 }}>
+        ■ {title}
+      </div>
+      <table style={{ width: "100%", fontFamily: "'VT323', monospace", fontSize: 18, borderCollapse: "collapse" }}>
+        <tbody>
+          {rows.map(([k, v], i) => (
+            <tr key={i} style={{ borderBottom: "1px dashed var(--phos-dim)" }}>
+              <td style={{ color: "var(--bone-dim)", padding: "6px 0", letterSpacing: "0.15em" }}>{k}</td>
+              <td style={{ color: "var(--phos)", textAlign: "right", padding: "6px 0", letterSpacing: "0.1em" }}>{v}</td>
+            </tr>
+          ))}
+        </tbody>
+      </table>
+    </div>
+  );
+}
+
+window.Nav = Nav;
+window.HomePage = HomePage;
+window.CartridgesPage = CartridgesPage;
+window.VeilLogo = VeilLogo;
+window.SectionHeader = SectionHeader;
+window.CornerBrackets = CornerBrackets;
+
+</script>
+<script type="text/babel" data-presets="react">
+// Apparish deep-dive page
+const { useState: useStateA, useEffect: useEffectA, useRef: useRefA } = React;
+
+function ApparishPage({ colorway }) {
+  return (
+    <div style={{ maxWidth: 1280, margin: "0 auto", padding: "30px 24px 80px" }}>
+      <ApparishHero colorway={colorway} />
+      <CoreLoop />
+      <GhostCards />
+      <GameFeatures />
+      <CityMap />
+      <StorySection />
+      <ApparishSpecs />
+    </div>
+  );
+}
+
+function ApparishHero({ colorway }) {
+  return (
+    <div style={{
+      position: "relative",
+      border: "2px solid var(--phos-dim)",
+      padding: "30px 24px 36px",
+      overflow: "hidden",
+      background: "radial-gradient(ellipse at 80% 20%, #1a3a25 0%, #050806 70%)",
+    }}>
+      <CornerBrackets />
+      {/* scanline sweep */}
+      <div style={{ position: "absolute", inset: 0, pointerEvents: "none",
+        background: "linear-gradient(180deg, transparent 0%, rgba(57,255,122,0.08) 2%, transparent 4%)",
+        animation: "scan-sweep 6s linear infinite",
+      }} />
+
+      <div style={{ display: "grid", gridTemplateColumns: "minmax(0, 1.4fr) minmax(280px, 1fr)", gap: 30, alignItems: "center", position: "relative", zIndex: 1 }}>
+        <div style={{ minWidth: 0 }}>
+          <div className="font-pixel" style={{ fontSize: 10, color: "var(--amber)", letterSpacing: "0.3em", marginBottom: 14 }}>
+            ▲ VL-001 · NOW LOADING
+          </div>
+          <div style={{
+            fontFamily: "'Monoton', 'Press Start 2P', monospace",
+            fontSize: "clamp(40px, 6.5vw, 92px)",
+            lineHeight: 0.95,
+            color: "var(--phos)",
+            textShadow: "0 0 18px rgba(57,255,122,0.7), 0 5px 0 #0a1a10",
+            letterSpacing: "0.02em",
+            whiteSpace: "nowrap",
+          }}>
+            APPARISH
+          </div>
+          <div className="font-pixel" style={{ fontSize: 12, color: "var(--phos)", letterSpacing: "0.25em", marginTop: 8, opacity: 0.85 }}>
+            SEE WHAT OTHERS DON'T.
+          </div>
+          <div className="font-mono" style={{ fontSize: 22, color: "var(--bone)", marginTop: 24, maxWidth: 560, lineHeight: 1.3 }}>
+            A paranormal reality game. Explore real haunted places on a live geolocation map and uncover persistent AI-generated spirits tied to local history and folklore.
+          </div>
+
+          <div style={{ display: "flex", gap: 12, marginTop: 24, flexWrap: "wrap" }}>
+            <a href="https://appari.sh" target="_blank" rel="noreferrer" className="btn-retro" style={{ textDecoration: "none", display: "inline-block" }}>
+              ▶ VISIT APPARI.SH
+            </a>
+            <button className="btn-retro" style={{ color: "var(--bone)", borderColor: "var(--bone-dim)" }}>
+              ◉ JOIN BETA
+            </button>
+          </div>
+        </div>
+
+        <div style={{ display: "flex", justifyContent: "center", alignItems: "center", minWidth: 0 }}>
+          <div className="float" style={{ flexShrink: 0 }}>
+            <Cartridge colorway={colorway} size={0.9} />
+          </div>
+        </div>
+      </div>
+
+      {/* HP/MP bars reframed as game meta */}
+      <div style={{ marginTop: 32, display: "grid", gridTemplateColumns: "repeat(4, 1fr)", gap: 16, borderTop: "1px dashed var(--phos-dim)", paddingTop: 16 }}>
+        <MetaBar label="GENRE" value="PARANORMAL · GEOLOC" />
+        <MetaBar label="MODE" value="SOLO · ASYNC PVP" />
+        <MetaBar label="PLATFORM" value="iOS · 2026" />
+        <MetaBar label="STATUS" value="BETA · MARCH" flash />
+      </div>
+    </div>
+  );
+}
+
+function MetaBar({ label, value, flash }) {
+  return (
+    <div>
+      <div className="font-mono" style={{ color: "var(--bone-dim)", fontSize: 13, letterSpacing: "0.2em" }}>{label}</div>
+      <div className="font-pixel" style={{
+        color: "var(--phos)", fontSize: 11, marginTop: 4, letterSpacing: "0.1em",
+        textShadow: "0 0 4px rgba(57,255,122,0.5)",
+        animation: flash ? "ghost-shimmer 1.4s ease-in-out infinite" : "none",
+      }}>{value}</div>
+    </div>
+  );
+}
+
+/* =========================================================
+   CORE LOOP
+========================================================= */
+function CoreLoop() {
+  const steps = [
+    { n: "01", label: "DISCOVER", body: "A live map of real haunted places. History pings you when you're close." },
+    { n: "02", label: "CAPTURE", body: "Spirits surface. Talk to them with AI voice. Their mood is shifting." },
+    { n: "03", label: "PROGRESS", body: "Every ghost is persistent. They remember how you treated them." },
+    { n: "04", label: "REPEAT", body: "Neglect them and they escape. Other players can steal them. Daily events rewrite the map." },
+  ];
+  return (
+    <div style={{ marginTop: 60 }}>
+      <SectionHeader kicker="— CORE LOOP" title="HOW TO PLAY" />
+      <div style={{ display: "grid", gridTemplateColumns: "repeat(4, 1fr)", gap: 16, marginTop: 24 }}>
+        {steps.map((s, i) => (
+          <div key={i} className="hud-frame" style={{ padding: 18, position: "relative", minHeight: 180 }}>
+            <div className="font-heavy" style={{ fontSize: 56, color: "var(--phos-dim)", lineHeight: 1, position: "absolute", top: 10, right: 14, opacity: 0.7 }}>
+              {s.n}
+            </div>
+            <div className="font-pixel" style={{ fontSize: 14, color: "var(--phos)", letterSpacing: "0.15em", marginTop: 40, marginBottom: 12, textShadow: "0 0 5px rgba(57,255,122,0.5)" }}>
+              {s.label}
+            </div>
+            <div className="font-mono" style={{ color: "var(--bone)", fontSize: 18, lineHeight: 1.3 }}>
+              {s.body}
+            </div>
+            {i < steps.length - 1 && (
+              <div style={{
+                position: "absolute", right: -20, top: "50%", transform: "translateY(-50%)",
+                color: "var(--phos)", fontFamily: "'Press Start 2P', monospace", fontSize: 14, zIndex: 2,
+                textShadow: "0 0 6px rgba(57,255,122,0.6)",
+              }}>▶</div>
+            )}
+          </div>
+        ))}
+      </div>
+    </div>
+  );
+}
+
+/* =========================================================
+   GHOST CARDS — pokedex style
+========================================================= */
+function GhostCards() {
+  const ghosts = [
+    { id: "001", name: "THE BELL-KEEPER", loc: "NEW ORLEANS, LA", mood: "RESTLESS", trait: "Tolls at 3am. Will tell you who rang last." },
+    { id: "014", name: "ROOM-412 GUEST", loc: "CHICAGO, IL", mood: "ATTACHED", trait: "Remembers every visitor. Prefers returnees." },
+    { id: "027", name: "FOG-WALKER", loc: "SAN FRANCISCO, CA", mood: "GRIEVING", trait: "Trades secrets for news from the living." },
+  ];
+  return (
+    <div style={{ marginTop: 70 }}>
+      <SectionHeader kicker="— SPECIMENS" title="THE CAST OF THE DEAD" />
+      <div className="font-mono" style={{ color: "var(--bone)", fontSize: 20, maxWidth: 640, marginBottom: 22 }}>
+        Every ghost is a persistent character. They remember you, react to how you treat them, and their mood shifts over time.
+      </div>
+      <div style={{ display: "grid", gridTemplateColumns: "repeat(3, 1fr)", gap: 18 }}>
+        {ghosts.map((g, i) => <GhostCard key={i} ghost={g} idx={i} />)}
+      </div>
+    </div>
+  );
+}
+
+function GhostCard({ ghost, idx }) {
+  const tones = ["#39ff7a", "#ffb020", "#e23a4a"];
+  const tone = tones[idx % 3];
+  return (
+    <div style={{
+      border: `2px solid ${tone}55`,
+      background: "linear-gradient(180deg, #0a140e 0%, #050806 100%)",
+      padding: 16,
+      position: "relative",
+      minHeight: 320,
+      display: "flex", flexDirection: "column",
+    }}>
+      <div style={{ display: "flex", justifyContent: "space-between", marginBottom: 10 }}>
+        <span className="font-pixel" style={{ fontSize: 10, color: tone, letterSpacing: "0.15em" }}>
+          № {ghost.id}
+        </span>
+        <span className="font-pixel" style={{ fontSize: 9, color: "var(--bone-dim)", letterSpacing: "0.15em" }}>
+          {ghost.mood}
+        </span>
+      </div>
+      {/* portrait area */}
+      <div style={{
+        aspectRatio: "1 / 1", width: "100%",
+        background: `radial-gradient(ellipse at 50% 40%, ${tone}22 0%, #0a140e 65%)`,
+        border: `1px solid ${tone}44`,
+        display: "flex", alignItems: "center", justifyContent: "center",
+        position: "relative", overflow: "hidden",
+      }}>
+        <svg viewBox="0 0 100 100" width="75%" height="75%">
+          <path
+            d="M28 46 Q28 22 50 22 Q72 22 72 46 L72 78 Q69 73 64 78 Q59 82 54 78 Q49 73 44 78 Q39 82 34 78 Q30 73 28 78 Z"
+            fill="none" stroke={tone} strokeWidth="1.4" opacity="0.9"
+          />
+          <ellipse cx="41" cy="46" rx="3" ry="4" fill={tone}/>
+          <ellipse cx="59" cy="46" rx="3" ry="4" fill={tone}/>
+          <path d="M42 60 Q50 55 58 60" stroke={tone} strokeWidth="1.2" fill="none" opacity="0.8"/>
+        </svg>
+        {/* scan lines */}
+        <div style={{
+          position: "absolute", inset: 0,
+          background: "repeating-linear-gradient(to bottom, rgba(0,0,0,0.25) 0 1px, transparent 1px 3px)",
+          pointerEvents: "none",
+        }}/>
+        {/* corner text */}
+        <div style={{ position: "absolute", top: 6, left: 6, fontFamily: "'VT323', monospace", fontSize: 10, color: tone, letterSpacing: "0.15em", opacity: 0.8 }}>
+          REC ●
+        </div>
+      </div>
+      <div className="font-pixel" style={{ fontSize: 12, color: "var(--phos)", letterSpacing: "0.08em", marginTop: 14, textShadow: "0 0 4px rgba(57,255,122,0.5)" }}>
+        {ghost.name}
+      </div>
+      <div className="font-mono" style={{ color: "var(--bone-dim)", fontSize: 14, letterSpacing: "0.15em", marginTop: 4 }}>
+        ⌖ {ghost.loc}
+      </div>
+      <div className="font-mono" style={{ color: "var(--bone)", fontSize: 16, marginTop: 10, lineHeight: 1.3, flex: 1 }}>
+        "{ghost.trait}"
+      </div>
+      {/* affinity bar */}
+      <div style={{ marginTop: 12 }}>
+        <div className="font-mono" style={{ fontSize: 11, color: "var(--bone-dim)", letterSpacing: "0.2em", marginBottom: 3 }}>
+          AFFINITY
+        </div>
+        <div style={{ height: 8, background: "#0a1a10", border: "1px solid var(--phos-dim)", position: "relative" }}>
+          <div style={{
+            width: `${40 + idx * 20}%`, height: "100%",
+            background: `repeating-linear-gradient(90deg, ${tone} 0 6px, ${tone}99 6px 10px)`,
+            boxShadow: `0 0 8px ${tone}99`,
+          }}/>
+        </div>
+      </div>
+    </div>
+  );
+}
+
+/* =========================================================
+   FEATURES
+========================================================= */
+function GameFeatures() {
+  const features = [
+    { icon: "◉", title: "LIVE GEO MAP", body: "Real world as your game board. Real haunted locations, curated from ghost tour data, historical records, community reports." },
+    { icon: "♪", title: "AI VOICE CHAT", body: "Every ghost speaks. Conversations deepen with every visit. Their mood shifts. They remember what you said last." },
+    { icon: "◈", title: "PERSISTENT SOULS", body: "Not collectibles. Characters. Neglect them and they escape — and other players can steal them from your roster." },
+    { icon: "✦", title: "DAILY HAUNTS", body: "The world you explored yesterday is not the world you'll find today. A daily event system rewrites what appears on the map." },
+    { icon: "⌬", title: "HIDDEN LAYER", body: "Players who've put in the time unlock ghosts invisible to everyone else. The world expands as you go deeper." },
+    { icon: "✶", title: "ON-DEVICE AI", body: "Ghost generation, voice, imagery, and story writing run locally on Apple silicon. No per-call costs. No latency." },
+  ];
+  return (
+    <div style={{ marginTop: 70 }}>
+      <SectionHeader kicker="— FEATURES" title="INSTRUCTION MANUAL" />
+      <div style={{ display: "grid", gridTemplateColumns: "repeat(3, 1fr)", gap: 16, marginTop: 22 }}>
+        {features.map((f, i) => (
+          <div key={i} className="hud-frame" style={{ padding: 18, minHeight: 170 }}>
+            <div style={{ display: "flex", alignItems: "baseline", gap: 12, marginBottom: 10 }}>
+              <div style={{
+                fontSize: 22, color: "var(--amber)", textShadow: "0 0 6px rgba(255,176,32,0.5)",
+              }}>{f.icon}</div>
+              <div className="font-pixel" style={{ fontSize: 12, color: "var(--phos)", letterSpacing: "0.1em", textShadow: "0 0 4px rgba(57,255,122,0.5)" }}>
+                {f.title}
+              </div>
+            </div>
+            <div className="font-mono" style={{ color: "var(--bone)", fontSize: 17, lineHeight: 1.3 }}>
+              {f.body}
+            </div>
+          </div>
+        ))}
+      </div>
+    </div>
+  );
+}
+
+/* =========================================================
+   CITY MAP (pilot cities)
+========================================================= */
+function CityMap() {
+  return (
+    <div style={{ marginTop: 70 }}>
+      <SectionHeader kicker="— DEPLOYMENT" title="3-CITY LAUNCH" />
+      <div className="font-mono" style={{ color: "var(--bone)", fontSize: 20, maxWidth: 620, marginBottom: 22 }}>
+        Launch cities selected for their historic density of haunted locations. Every neighborhood is its own map.
+      </div>
+      <div style={{
+        border: "2px solid var(--phos-dim)",
+        background: "linear-gradient(180deg, #050806 0%, #0a1510 100%)",
+        padding: 20,
+        position: "relative",
+        overflow: "hidden",
+      }}>
+        <CornerBrackets />
+        <div style={{
+          aspectRatio: "16 / 7",
+          position: "relative",
+          backgroundImage: "linear-gradient(rgba(57,255,122,0.08) 1px, transparent 1px), linear-gradient(90deg, rgba(57,255,122,0.08) 1px, transparent 1px)",
+          backgroundSize: "30px 30px",
+          overflow: "hidden",
+        }}>
+          {/* US outline approximation */}
+          <svg viewBox="0 0 1000 440" style={{ position: "absolute", inset: 0, width: "100%", height: "100%" }}>
+            <path
+              d="M60,180 L140,120 L240,90 L360,80 L460,70 L560,70 L680,80 L780,100 L880,130 L940,180 L930,250 L880,300 L800,340 L680,360 L560,360 L460,370 L360,360 L260,340 L180,300 L110,260 Z"
+              fill="rgba(57,255,122,0.04)"
+              stroke="rgba(57,255,122,0.45)"
+              strokeWidth="1.2"
+              strokeDasharray="4 3"
+            />
+            {/* pins */}
+            {[
+              { x: 340, y: 240, name: "NEW ORLEANS", code: "NOLA" },
+              { x: 540, y: 170, name: "CHICAGO", code: "CHI" },
+              { x: 130, y: 180, name: "SAN FRANCISCO", code: "SF" },
+            ].map((c, i) => (
+              <g key={i}>
+                <circle cx={c.x} cy={c.y} r="18" fill="none" stroke="#39ff7a" strokeWidth="1" opacity="0.3">
+                  <animate attributeName="r" from="8" to="30" dur="2.5s" repeatCount="indefinite"/>
+                  <animate attributeName="opacity" from="0.6" to="0" dur="2.5s" repeatCount="indefinite"/>
+                </circle>
+                <circle cx={c.x} cy={c.y} r="6" fill="#39ff7a" />
+                <circle cx={c.x} cy={c.y} r="10" fill="none" stroke="#39ff7a" strokeWidth="1"/>
+                <text x={c.x + 16} y={c.y - 10} fontFamily="'Press Start 2P', monospace" fontSize="14" fill="#39ff7a" letterSpacing="2">
+                  {c.name}
+                </text>
+                <text x={c.x + 16} y={c.y + 8} fontFamily="'VT323', monospace" fontSize="16" fill="#d7e5d2" opacity="0.75">
+                  ▸ {c.code} · LAUNCH
+                </text>
+              </g>
+            ))}
+          </svg>
+          {/* HUD overlays */}
+          <div style={{ position: "absolute", top: 10, left: 10, fontFamily: "'VT323', monospace", fontSize: 14, color: "var(--phos)", letterSpacing: "0.2em", opacity: 0.8 }}>
+            ⌖ GEOLOC · LIVE
+          </div>
+          <div style={{ position: "absolute", top: 10, right: 10, fontFamily: "'VT323', monospace", fontSize: 14, color: "var(--phos)", letterSpacing: "0.2em", opacity: 0.8 }}>
+            ZONE 03 / 50<span className="cursor"/>
+          </div>
+          <div style={{ position: "absolute", bottom: 10, left: 10, fontFamily: "'VT323', monospace", fontSize: 12, color: "var(--bone-dim)", letterSpacing: "0.2em" }}>
+            ENCOUNTERS LOGGED: 1,743 · DAY 11
+          </div>
+        </div>
+      </div>
+    </div>
+  );
+}
+
+/* =========================================================
+   STORY
+========================================================= */
+function StorySection() {
+  return (
+    <div style={{ marginTop: 70, display: "grid", gridTemplateColumns: "1.1fr 1fr", gap: 20 }}>
+      <div className="hud-frame" style={{ padding: "24px 26px" }}>
+        <div className="font-pixel" style={{ fontSize: 11, color: "var(--amber)", letterSpacing: "0.25em", marginBottom: 14 }}>
+          ◆ THE PITCH
+        </div>
+        <div className="font-mono" style={{ fontSize: 22, color: "var(--bone)", lineHeight: 1.3 }}>
+          Every city has a hidden layer.
+          <br/><br/>
+          <span className="phos">Real places. Real folklore. Characters that remember you.</span>
+          <br/><br/>
+          The world you explore outside is the game.
+        </div>
+      </div>
+      <div className="hud-frame" style={{ padding: "24px 26px", background: "rgba(57,255,122,0.03)" }}>
+        <div className="font-pixel" style={{ fontSize: 11, color: "var(--amber)", letterSpacing: "0.25em", marginBottom: 14 }}>
+          ◆ WHAT TO EXPECT
+        </div>
+        <div className="font-mono" style={{ fontSize: 18, color: "var(--bone)", lineHeight: 1.35 }}>
+          A live map of your neighborhood's haunted history. Conversations with spirits who speak back. A roster of ghosts that only you have found. And daily events that rewrite the map overnight.
+          <br/><br/>
+          <span className="phos">See what others don't.</span>
+        </div>
+      </div>
+    </div>
+  );
+}
+
+function StatLine({ num, body, last }) {
+  return (
+    <div style={{
+      display: "grid", gridTemplateColumns: "auto 1fr", gap: 16, alignItems: "baseline",
+      padding: "12px 0",
+      borderBottom: last ? "none" : "1px dashed var(--phos-dim)",
+    }}>
+      <div className="font-heavy" style={{ fontSize: 36, color: "var(--phos)", textShadow: "0 0 8px rgba(57,255,122,0.5)", letterSpacing: "0.02em" }}>
+        {num}
+      </div>
+      <div className="font-mono" style={{ color: "var(--bone)", fontSize: 17, lineHeight: 1.25 }}>
+        {body}
+      </div>
+    </div>
+  );
+}
+
+/* =========================================================
+   SPECS
+========================================================= */
+function ApparishSpecs() {
+  return (
+    <div style={{ marginTop: 60, display: "grid", gridTemplateColumns: "2fr 1fr", gap: 18 }}>
+      <div className="hud-frame" style={{ padding: 22 }}>
+        <div className="font-pixel" style={{ fontSize: 12, color: "var(--phos)", letterSpacing: "0.2em", marginBottom: 18, textShadow: "0 0 4px rgba(57,255,122,0.5)" }}>
+          ■ WHAT'S COMING
+        </div>
+        <div style={{ display: "grid", gridTemplateColumns: "repeat(3, 1fr)", gap: 14 }}>
+          {[
+            { v: "OPEN BETA", body: "Step into the app. Talk to your first ghost." },
+            { v: "NEW CITIES", body: "Three more on the map after launch." },
+            { v: "HALLOWEEN", body: "The night the veil is thinnest. You'll want to be out." },
+          ].map((m, i) => (
+            <div key={i} style={{ borderLeft: "2px solid var(--phos-dim)", paddingLeft: 12 }}>
+              <div className="font-pixel" style={{ fontSize: 11, color: "var(--phos)", letterSpacing: "0.1em", textShadow: "0 0 4px rgba(57,255,122,0.5)" }}>
+                {m.v}
+              </div>
+              <div className="font-mono" style={{ fontSize: 16, color: "var(--bone)", letterSpacing: "0.02em", marginTop: 8, lineHeight: 1.3 }}>
+                {m.body}
+              </div>
+            </div>
+          ))}
+        </div>
+      </div>
+      <div className="hud-frame" style={{ padding: 22, display: "flex", flexDirection: "column", justifyContent: "center", alignItems: "flex-start", gap: 12 }}>
+        <div className="font-pixel" style={{ fontSize: 11, color: "var(--phos)", letterSpacing: "0.2em", textShadow: "0 0 4px rgba(57,255,122,0.5)" }}>
+          ■ GET THE GAME
+        </div>
+        <div className="font-mono" style={{ color: "var(--bone)", fontSize: 17, lineHeight: 1.3 }}>
+          Visit the official Apparish site. Beta access opens Q2 2026.
+        </div>
+        <a href="https://appari.sh" target="_blank" rel="noreferrer" className="btn-retro" style={{ textDecoration: "none" }}>
+          ▶ APPARI.SH
+        </a>
+      </div>
+    </div>
+  );
+}
+
+window.ApparishPage = ApparishPage;
+
+</script>
+<script type="text/babel" data-presets="react">
+// Press page + Footer + Tweaks panel
+const { useState: useStateP, useEffect: useEffectP } = React;
+
+function PressPage() {
+  return (
+    <div style={{ maxWidth: 1100, margin: "0 auto", padding: "30px 24px 80px" }}>
+      <SectionHeader kicker="— TRANSMISSIONS" title="PRESS & CONTACT" />
+      <div className="font-mono" style={{ color: "var(--bone)", fontSize: 20, maxWidth: 640, marginBottom: 30 }}>
+        For press inquiries, beta invites, city launch coordination, or paranormal leads, reach the studio directly.
+      </div>
+
+      <div style={{ display: "grid", gridTemplateColumns: "1.2fr 1fr", gap: 20 }}>
+        <div className="hud-frame" style={{ padding: 24 }}>
+          <div className="font-pixel" style={{ fontSize: 11, color: "var(--phos)", letterSpacing: "0.2em", textShadow: "0 0 4px rgba(57,255,122,0.5)", marginBottom: 16 }}>
+            ■ DIRECT LINE
+          </div>
+
+          <ContactRow icon="✉" label="STUDIO" value="ahmed@appari.sh" href="mailto:ahmed@appari.sh" />
+          <ContactRow icon="◉" label="APPARISH" value="appari.sh" href="https://appari.sh" />
+          <ContactRow icon="▲" label="PRESS KIT" value="Available on request" />
+          <ContactRow icon="✶" label="BETA ACCESS" value="Opens Q2 2026" last />
+
+          <div style={{ marginTop: 24, padding: 14, border: "1px dashed var(--phos-dim)", background: "rgba(57,255,122,0.03)" }}>
+            <div className="font-pixel" style={{ fontSize: 9, color: "var(--amber)", letterSpacing: "0.25em", marginBottom: 6 }}>
+              ▲ NOTE
+            </div>
+            <div className="font-mono" style={{ color: "var(--bone)", fontSize: 17, lineHeight: 1.3 }}>
+              Journalists covering paranormal, AI gaming, or location-based experiences — we'll send a build, a ghost, and a map of somewhere near you.
+            </div>
+          </div>
+        </div>
+
+        <div className="hud-frame" style={{ padding: 24 }}>
+          <div className="font-pixel" style={{ fontSize: 11, color: "var(--phos)", letterSpacing: "0.2em", textShadow: "0 0 4px rgba(57,255,122,0.5)", marginBottom: 16 }}>
+            ■ SEND A SIGNAL
+          </div>
+          <ContactForm />
+        </div>
+      </div>
+
+      <div style={{ marginTop: 40, display: "grid", gridTemplateColumns: "repeat(3, 1fr)", gap: 16 }}>
+        <QuickFact label="FOUNDED" value="2025" />
+        <QuickFact label="HEADQUARTERS" value="REMOTE · US" />
+        <QuickFact label="FIRST TITLE" value="APPARISH (2026)" />
+      </div>
+    </div>
+  );
+}
+
+function ContactRow({ icon, label, value, href, last }) {
+  const Inner = () => (
+    <div style={{
+      display: "grid", gridTemplateColumns: "30px 1fr auto", gap: 14, alignItems: "baseline",
+      padding: "14px 0",
+      borderBottom: last ? "none" : "1px dashed var(--phos-dim)",
+    }}>
+      <div style={{ color: "var(--amber)", fontSize: 18, textShadow: "0 0 6px rgba(255,176,32,0.5)" }}>{icon}</div>
+      <div className="font-mono" style={{ color: "var(--bone-dim)", fontSize: 14, letterSpacing: "0.2em" }}>{label}</div>
+      <div className="font-pixel" style={{ fontSize: 12, color: href ? "var(--phos)" : "var(--bone)", letterSpacing: "0.08em", textShadow: href ? "0 0 4px rgba(57,255,122,0.5)" : "none" }}>
+        {value}
+      </div>
+    </div>
+  );
+  return href ? (
+    <a href={href} target="_blank" rel="noreferrer" style={{ textDecoration: "none", display: "block" }}>
+      <Inner />
+    </a>
+  ) : <Inner />;
+}
+
+function ContactForm() {
+  const [sent, setSent] = useStateP(false);
+  const submit = (e) => { e.preventDefault(); setSent(true); };
+  if (sent) {
+    return (
+      <div className="font-mono" style={{ color: "var(--phos)", fontSize: 18, lineHeight: 1.4 }}>
+        &gt; TRANSMISSION RECEIVED.<br/>
+        &gt; A GHOST WILL BE IN TOUCH.<span className="cursor"/>
+      </div>
+    );
+  }
+  return (
+    <form onSubmit={submit} style={{ display: "flex", flexDirection: "column", gap: 14 }}>
+      <RetroInput label="NAME" />
+      <RetroInput label="EMAIL" type="email" />
+      <RetroInput label="CITY" placeholder="The one we should haunt" />
+      <RetroInput label="MESSAGE" textarea />
+      <button type="submit" className="btn-retro" style={{ alignSelf: "flex-start" }}>
+        ▶ TRANSMIT
+      </button>
+    </form>
+  );
+}
+
+function RetroInput({ label, textarea, type = "text", placeholder }) {
+  return (
+    <label style={{ display: "flex", flexDirection: "column", gap: 6 }}>
+      <span className="font-pixel" style={{ fontSize: 9, color: "var(--bone-dim)", letterSpacing: "0.25em" }}>
+        ▸ {label}
+      </span>
+      {textarea ? (
+        <textarea
+          placeholder={placeholder}
+          rows={3}
+          style={{
+            background: "#050806",
+            color: "var(--phos)",
+            border: "1px solid var(--phos-dim)",
+            padding: 10,
+            fontFamily: "'VT323', monospace",
+            fontSize: 18,
+            outline: "none",
+            resize: "vertical",
+          }}
+          onFocus={(e) => e.target.style.borderColor = "var(--phos)"}
+          onBlur={(e) => e.target.style.borderColor = "var(--phos-dim)"}
+        />
+      ) : (
+        <input
+          type={type}
+          placeholder={placeholder}
+          style={{
+            background: "#050806",
+            color: "var(--phos)",
+            border: "1px solid var(--phos-dim)",
+            padding: 10,
+            fontFamily: "'VT323', monospace",
+            fontSize: 18,
+            outline: "none",
+          }}
+          onFocus={(e) => e.target.style.borderColor = "var(--phos)"}
+          onBlur={(e) => e.target.style.borderColor = "var(--phos-dim)"}
+        />
+      )}
+    </label>
+  );
+}
+
+function QuickFact({ label, value }) {
+  return (
+    <div className="hud-frame" style={{ padding: 16 }}>
+      <div className="font-mono" style={{ color: "var(--bone-dim)", fontSize: 13, letterSpacing: "0.2em" }}>{label}</div>
+      <div className="font-pixel" style={{ fontSize: 12, color: "var(--phos)", letterSpacing: "0.1em", marginTop: 8, textShadow: "0 0 4px rgba(57,255,122,0.5)" }}>
+        {value}
+      </div>
+    </div>
+  );
+}
+
+/* =========================================================
+   FOOTER
+========================================================= */
+function Footer() {
+  return (
+    <footer style={{
+      marginTop: 40, padding: "30px 24px 40px",
+      borderTop: "2px solid var(--phos-dim)",
+      background: "#050806",
+    }}>
+      <div style={{ maxWidth: 1280, margin: "0 auto", display: "grid", gridTemplateColumns: "auto 1fr auto", gap: 20, alignItems: "center" }}>
+        <div style={{ display: "flex", gap: 10, alignItems: "center" }}>
+          <VeilLogo size={30} />
+          <div>
+            <div className="font-pixel" style={{ fontSize: 12, color: "var(--phos)", letterSpacing: "0.15em", textShadow: "0 0 5px rgba(57,255,122,0.5)" }}>
+              VEIL LABS
+            </div>
+            <div className="font-mono" style={{ fontSize: 13, color: "var(--bone-dim)", letterSpacing: "0.2em", marginTop: 2 }}>
+              WE MAKE GAMES THAT HAUNT.
+            </div>
+          </div>
+        </div>
+        <div className="font-mono" style={{ fontSize: 14, color: "var(--bone-dim)", textAlign: "center", letterSpacing: "0.15em" }}>
+          © 2026 VEIL LABS INC · VL-ROM CATALOGUE · LICENSED BY THE OTHER SIDE
+        </div>
+        <div className="font-mono" style={{ fontSize: 14, color: "var(--phos)", letterSpacing: "0.2em", textAlign: "right" }}>
+          <span className="cursor">▊</span> ONLINE
+        </div>
+      </div>
+    </footer>
+  );
+}
+
+/* =========================================================
+   TWEAKS PANEL
+========================================================= */
+function TweaksPanel({ state, setState, visible }) {
+  if (!visible) return null;
+  const colorways = ["ghost-green", "atomic-purple", "blood-red", "classic-gray", "bone"];
+  return (
+    <div style={{
+      position: "fixed", bottom: 16, right: 16, zIndex: 10000,
+      width: 280, background: "#050806",
+      border: "2px solid var(--phos)",
+      boxShadow: "0 0 20px rgba(57,255,122,0.3)",
+      padding: 16,
+      fontFamily: "'VT323', monospace",
+    }}>
+      <div className="font-pixel" style={{ fontSize: 11, color: "var(--phos)", letterSpacing: "0.2em", marginBottom: 14, textShadow: "0 0 5px rgba(57,255,122,0.5)", borderBottom: "1px dashed var(--phos-dim)", paddingBottom: 10 }}>
+        ▣ TWEAKS
+      </div>
+
+      <TweakGroup label="CARTRIDGE COLORWAY">
+        <div style={{ display: "flex", gap: 6, flexWrap: "wrap" }}>
+          {colorways.map((c) => (
+            <button key={c}
+              onClick={() => setState({ ...state, colorway: c })}
+              className="btn-ghost"
+              style={{
+                fontSize: 11, padding: "4px 8px",
+                borderColor: state.colorway === c ? "var(--phos)" : "var(--bone-dim)",
+                color: state.colorway === c ? "var(--phos)" : "var(--bone)",
+              }}
+            >{c}</button>
+          ))}
+        </div>
+      </TweakGroup>
+
+      <TweakGroup label="CRT INTENSITY">
+        <input type="range" min="0" max="1" step="0.05" value={state.crtIntensity}
+          onChange={(e) => setState({ ...state, crtIntensity: parseFloat(e.target.value) })}
+          style={{ width: "100%", accentColor: "var(--phos)" }}
+        />
+        <div className="font-mono" style={{ fontSize: 13, color: "var(--bone-dim)", letterSpacing: "0.2em" }}>
+          {Math.round(state.crtIntensity * 100)}%
+        </div>
+      </TweakGroup>
+
+      <TweakGroup label="SCANLINES">
+        <input type="range" min="0" max="0.6" step="0.02" value={state.scanlineOpacity}
+          onChange={(e) => setState({ ...state, scanlineOpacity: parseFloat(e.target.value) })}
+          style={{ width: "100%", accentColor: "var(--phos)" }}
+        />
+      </TweakGroup>
+
+      <TweakGroup label="PHOSPHOR HUE">
+        <div style={{ display: "flex", gap: 6, flexWrap: "wrap" }}>
+          {[
+            ["GREEN", "#39ff7a", "#1a4a2a"],
+            ["AMBER", "#ffb020", "#5a3e0a"],
+            ["BLUE",  "#5ac8ff", "#1a3a55"],
+            ["RED",   "#ff5a6a", "#5a1a22"],
+          ].map(([name, hex, dim]) => (
+            <button key={name}
+              onClick={() => setState({ ...state, phosphor: hex, phosphorDim: dim })}
+              className="btn-ghost"
+              style={{
+                fontSize: 11, padding: "4px 8px",
+                borderColor: state.phosphor === hex ? hex : "var(--bone-dim)",
+                color: state.phosphor === hex ? hex : "var(--bone)",
+              }}
+            >{name}</button>
+          ))}
+        </div>
+      </TweakGroup>
+
+      <TweakGroup label="BOOT SEQUENCE">
+        <button className="btn-ghost" style={{ fontSize: 11 }}
+          onClick={() => setState({ ...state, replayBoot: (state.replayBoot || 0) + 1, bootSkip: false })}
+        >▶ REPLAY BOOT</button>
+      </TweakGroup>
+
+      <div className="font-mono" style={{ fontSize: 11, color: "var(--bone-dim)", letterSpacing: "0.15em", marginTop: 10, borderTop: "1px dashed var(--phos-dim)", paddingTop: 8 }}>
+        changes saved automatically
+      </div>
+    </div>
+  );
+}
+
+function TweakGroup({ label, children }) {
+  return (
+    <div style={{ marginBottom: 14 }}>
+      <div className="font-pixel" style={{ fontSize: 8, color: "var(--bone-dim)", letterSpacing: "0.25em", marginBottom: 8 }}>
+        ▸ {label}
+      </div>
+      {children}
+    </div>
+  );
+}
+
+window.PressPage = PressPage;
+window.Footer = Footer;
+window.TweaksPanel = TweaksPanel;
+
+</script>
+<script type="text/babel" data-presets="react">
+const { useState: useStateMain, useEffect: useEffectMain } = React;
+const TWEAK_DEFAULTS = /*EDITMODE-BEGIN*/{
+  "colorway": "ghost-green",
+  "crtIntensity": 0.35,
+  "scanlineOpacity": 0.18,
+  "phosphor": "#39ff7a",
+  "phosphorDim": "#1a4a2a"
+}/*EDITMODE-END*/;
+function App(){
+  const [booted,setBooted]=useStateMain(()=>sessionStorage.getItem("vl-booted")==="1");
+  const [page,setPage]=useStateMain(()=>localStorage.getItem("vl-page")||"home");
+  const [tweaksVisible,setTweaksVisible]=useStateMain(false);
+  const [state,setState]=useStateMain(()=>{try{return {...TWEAK_DEFAULTS,...JSON.parse(localStorage.getItem("vl-tweaks")||"{}")};}catch{return TWEAK_DEFAULTS;}});
+  const [bootKey,setBootKey]=useStateMain(0);
+  useEffectMain(()=>{localStorage.setItem("vl-page",page);window.scrollTo(0,0);},[page]);
+  useEffectMain(()=>{localStorage.setItem("vl-tweaks",JSON.stringify(state));},[state]);
+  useEffectMain(()=>{document.documentElement.style.setProperty("--crt-intensity",state.crtIntensity);document.documentElement.style.setProperty("--scanline-opacity",state.scanlineOpacity);document.documentElement.style.setProperty("--phos",state.phosphor);document.documentElement.style.setProperty("--phos-dim",state.phosphorDim);},[state.crtIntensity,state.scanlineOpacity,state.phosphor,state.phosphorDim]);
+  useEffectMain(()=>{if(state.replayBoot&&state.replayBoot!==bootKey){setBooted(false);setBootKey(state.replayBoot);sessionStorage.removeItem("vl-booted");}},[state.replayBoot]);
+  useEffectMain(()=>{const onMessage=(e)=>{if(!e.data||typeof e.data!=="object")return;if(e.data.type==="__activate_edit_mode")setTweaksVisible(true);if(e.data.type==="__deactivate_edit_mode")setTweaksVisible(false);};window.addEventListener("message",onMessage);window.parent.postMessage({type:"__edit_mode_available"},"*");return()=>window.removeEventListener("message",onMessage);},[]);
+  useEffectMain(()=>{window.parent.postMessage({type:"__edit_mode_set_keys",edits:{colorway:state.colorway,crtIntensity:state.crtIntensity,scanlineOpacity:state.scanlineOpacity,phosphor:state.phosphor,phosphorDim:state.phosphorDim}},"*");},[state.colorway,state.crtIntensity,state.scanlineOpacity,state.phosphor,state.phosphorDim]);
+  const doneBoot=()=>{setBooted(true);sessionStorage.setItem("vl-booted","1");};
+  const Page={home:HomePage,cartridges:CartridgesPage,apparish:ApparishPage,press:PressPage}[page]||HomePage;
+  return (<div>{!booted&&<BootSequence key={bootKey} onDone={doneBoot}/>}<div style={{visibility:booted?"visible":"hidden"}}><Nav page={page} setPage={setPage}/><Page setPage={setPage} colorway={state.colorway}/><Footer/></div><TweaksPanel state={state} setState={setState} visible={tweaksVisible}/></div>);
+}
+ReactDOM.createRoot(document.getElementById("root")).render(<App/>);
+</script>
 </body>
 </html>
