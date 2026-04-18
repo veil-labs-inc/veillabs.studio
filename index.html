@@ -1942,11 +1942,11 @@ const TWEAK_DEFAULTS = /*EDITMODE-BEGIN*/{
 }/*EDITMODE-END*/;
 function App(){
   const [booted,setBooted]=useStateMain(()=>sessionStorage.getItem("vl-booted")==="1");
-  const [page,setPage]=useStateMain(()=>localStorage.getItem("vl-page")||"home");
+  const [page,setPage]=useStateMain("home");
   const [tweaksVisible,setTweaksVisible]=useStateMain(false);
   const [state,setState]=useStateMain(()=>{try{return {...TWEAK_DEFAULTS,...JSON.parse(localStorage.getItem("vl-tweaks")||"{}")};}catch{return TWEAK_DEFAULTS;}});
   const [bootKey,setBootKey]=useStateMain(0);
-  useEffectMain(()=>{localStorage.setItem("vl-page",page);window.scrollTo(0,0);},[page]);
+  useEffectMain(()=>{window.scrollTo(0,0);},[page]);
   useEffectMain(()=>{localStorage.setItem("vl-tweaks",JSON.stringify(state));},[state]);
   useEffectMain(()=>{document.documentElement.style.setProperty("--crt-intensity",state.crtIntensity);document.documentElement.style.setProperty("--scanline-opacity",state.scanlineOpacity);document.documentElement.style.setProperty("--phos",state.phosphor);document.documentElement.style.setProperty("--phos-dim",state.phosphorDim);},[state.crtIntensity,state.scanlineOpacity,state.phosphor,state.phosphorDim]);
   useEffectMain(()=>{if(state.replayBoot&&state.replayBoot!==bootKey){setBooted(false);setBootKey(state.replayBoot);sessionStorage.removeItem("vl-booted");}},[state.replayBoot]);
