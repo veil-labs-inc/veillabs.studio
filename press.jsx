@@ -9,7 +9,7 @@ function PressPage() {
         For press inquiries, beta invites, city launch coordination, or paranormal leads, reach the studio directly.
       </div>
 
-      <div style={{ display: "grid", gridTemplateColumns: "1.2fr 1fr", gap: 20 }}>
+      <div className="grid-responsive-2" style={{ display: "grid", gridTemplateColumns: "1.2fr 1fr", gap: 20 }}>
         <div className="hud-frame" style={{ padding: 24 }}>
           <div className="font-pixel" style={{ fontSize: 11, color: "var(--phos)", letterSpacing: "0.2em", textShadow: "0 0 4px rgba(57,255,122,0.5)", marginBottom: 16 }}>
             ■ DIRECT LINE
@@ -38,7 +38,7 @@ function PressPage() {
         </div>
       </div>
 
-      <div style={{ marginTop: 40, display: "grid", gridTemplateColumns: "repeat(3, 1fr)", gap: 16 }}>
+      <div className="grid-responsive-3" style={{ marginTop: 40, display: "grid", gridTemplateColumns: "repeat(3, 1fr)", gap: 16 }}>
         <QuickFact label="FOUNDED" value="2025" />
         <QuickFact label="HEADQUARTERS" value="REMOTE · US" />
         <QuickFact label="FIRST TITLE" value="APPARISH (2026)" />
@@ -157,7 +157,7 @@ function Footer() {
       borderTop: "2px solid var(--phos-dim)",
       background: "#050806",
     }}>
-      <div style={{ maxWidth: 1280, margin: "0 auto", display: "grid", gridTemplateColumns: "auto 1fr auto", gap: 20, alignItems: "center" }}>
+      <div className="footer-grid" style={{ maxWidth: 1280, margin: "0 auto", display: "grid", gridTemplateColumns: "auto 1fr auto", gap: 20, alignItems: "center" }}>
         <div style={{ display: "flex", gap: 10, alignItems: "center" }}>
           <VeilLogo size={30} />
           <div>

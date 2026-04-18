@@ -22,11 +22,11 @@ function Nav({ page, setPage }) {
     }}>
       <button onClick={() => setPage("home")} style={{ background: "none", border: "none", cursor: "pointer", display: "flex", alignItems: "center", gap: 10 }}>
         <VeilLogo size={26} />
-        <div style={{ fontFamily: "'Press Start 2P', monospace", fontSize: 12, color: "var(--phos)", letterSpacing: "0.15em", textShadow: "0 0 6px rgba(57,255,122,0.5)" }}>
+        <div className="nav-logo-text" style={{ fontFamily: "'Press Start 2P', monospace", fontSize: 12, color: "var(--phos)", letterSpacing: "0.15em", textShadow: "0 0 6px rgba(57,255,122,0.5)" }}>
           VEIL LABS
         </div>
       </button>
-      <div style={{ display: "flex", gap: 4, alignItems: "center" }}>
+      <div className="nav-links" style={{ display: "flex", gap: 4, alignItems: "center" }}>
         {items.map(([label, key]) => (
           <button
             key={key}
@@ -48,7 +48,7 @@ function Nav({ page, setPage }) {
           </button>
         ))}
       </div>
-      <div className="font-mono" style={{ color: "var(--phos)", fontSize: 14, letterSpacing: "0.2em", opacity: 0.75 }}>
+      <div className="font-mono nav-player1" style={{ color: "var(--phos)", fontSize: 14, letterSpacing: "0.2em", opacity: 0.75 }}>
         <span className="cursor">PLAYER 1</span>
       </div>
     </nav>
@@ -117,7 +117,7 @@ function Hero({ setPage, colorway }) {
         pointerEvents: "none",
       }} />
 
-      <div style={{ display: "grid", gridTemplateColumns: "1.3fr 1fr", gap: 30, alignItems: "center", position: "relative", zIndex: 1 }}>
+      <div className="grid-responsive-hero" style={{ display: "grid", gridTemplateColumns: "1.3fr 1fr", gap: 30, alignItems: "center", position: "relative", zIndex: 1 }}>
         <div>
           <div className="font-pixel" style={{ fontSize: 10, color: "var(--amber)", letterSpacing: "0.3em", marginBottom: 18 }}>
             ▲ VEIL LABS · EST. 2025
@@ -153,14 +153,14 @@ function Hero({ setPage, colorway }) {
         </div>
 
         <div style={{ display: "flex", justifyContent: "center", alignItems: "center" }}>
-          <div className="float">
+          <div className="float cart-scale-mobile">
             <Cartridge colorway={colorway} size={0.95} />
           </div>
         </div>
       </div>
 
       {/* HUD strip */}
-      <div style={{
+      <div className="hud-stats" style={{
         marginTop: 30,
         display: "flex", justifyContent: "space-between", alignItems: "center",
         borderTop: "1px dashed var(--phos-dim)",
@@ -209,7 +209,7 @@ function CornerBrackets() {
 ========================================================= */
 function MissionStrip() {
   return (
-    <div style={{ marginTop: 60, display: "grid", gridTemplateColumns: "repeat(3, 1fr)", gap: 18 }}>
+    <div className="grid-responsive-3" style={{ marginTop: 60, display: "grid", gridTemplateColumns: "repeat(3, 1fr)", gap: 18 }}>
       {[
         {
           kicker: "01 / MISSION",
@@ -295,7 +295,7 @@ function Shelf({ setPage, colorway, preview = false }) {
         position: "relative",
       }}>
         <CornerBrackets />
-        <div style={{ display: "grid", gridTemplateColumns: "repeat(3, 1fr)", gap: 24, alignItems: "end" }}>
+        <div className="grid-responsive-shelf" style={{ display: "grid", gridTemplateColumns: "repeat(3, 1fr)", gap: 24, alignItems: "end" }}>
           {slots.map((s, i) => (
             <SlotItem key={i} slot={s} onClick={s.type === "cart" ? () => setPage("apparish") : null} />
           ))}
@@ -396,7 +396,7 @@ function CartCaption({ slot, dimmed }) {
 function PlayerOneDialogue() {
   return (
     <div style={{ marginTop: 70 }}>
-      <div className="hud-frame" style={{ padding: "22px 24px", display: "grid", gridTemplateColumns: "auto 1fr", gap: 20, alignItems: "center" }}>
+      <div className="hud-frame grid-responsive-dialogue" style={{ padding: "22px 24px", display: "grid", gridTemplateColumns: "auto 1fr", gap: 20, alignItems: "center" }}>
         <div style={{
           width: 72, height: 72, border: "2px solid var(--phos)",
           background: "#0a1510",
@@ -428,7 +428,7 @@ function CartridgesPage({ setPage, colorway }) {
         Each Veil Labs game is released as a cartridge. One is shipping. More are in the vault. Click a cartridge to learn more — hover to tilt, click the shipped cart to flip the back.
       </div>
       <Shelf setPage={setPage} colorway={colorway} />
-      <div style={{ marginTop: 40, display: "grid", gridTemplateColumns: "1fr 1fr", gap: 18 }}>
+      <div className="grid-responsive-2" style={{ marginTop: 40, display: "grid", gridTemplateColumns: "1fr 1fr", gap: 18 }}>
         <RomSpec title="HARDWARE" rows={[
           ["PLATFORM", "iOS · iPadOS"],
           ["NEURAL", "APPLE SILICON"],

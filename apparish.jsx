@@ -31,7 +31,7 @@ function ApparishHero({ colorway }) {
         animation: "scan-sweep 6s linear infinite",
       }} />
 
-      <div style={{ display: "grid", gridTemplateColumns: "minmax(0, 1.4fr) minmax(280px, 1fr)", gap: 30, alignItems: "center", position: "relative", zIndex: 1 }}>
+      <div className="grid-responsive-hero" style={{ display: "grid", gridTemplateColumns: "minmax(0, 1.4fr) minmax(280px, 1fr)", gap: 30, alignItems: "center", position: "relative", zIndex: 1 }}>
         <div style={{ minWidth: 0 }}>
           <div className="font-pixel" style={{ fontSize: 10, color: "var(--amber)", letterSpacing: "0.3em", marginBottom: 14 }}>
             ▲ VL-001 · NOW LOADING
@@ -44,7 +44,7 @@ function ApparishHero({ colorway }) {
             textShadow: "0 0 18px rgba(57,255,122,0.7), 0 5px 0 #0a1a10",
             letterSpacing: "0.02em",
             whiteSpace: "nowrap",
-          }}>
+          }} className="apparish-title">
             APPARISH
           </div>
           <div className="font-pixel" style={{ fontSize: 12, color: "var(--phos)", letterSpacing: "0.25em", marginTop: 8, opacity: 0.85 }}>
@@ -65,14 +65,14 @@ function ApparishHero({ colorway }) {
         </div>
 
         <div style={{ display: "flex", justifyContent: "center", alignItems: "center", minWidth: 0 }}>
-          <div className="float" style={{ flexShrink: 0 }}>
+          <div className="float cart-scale-mobile" style={{ flexShrink: 0 }}>
             <Cartridge colorway={colorway} size={0.9} />
           </div>
         </div>
       </div>
 
       {/* HP/MP bars reframed as game meta */}
-      <div style={{ marginTop: 32, display: "grid", gridTemplateColumns: "repeat(4, 1fr)", gap: 16, borderTop: "1px dashed var(--phos-dim)", paddingTop: 16 }}>
+      <div className="grid-responsive-4" style={{ marginTop: 32, display: "grid", gridTemplateColumns: "repeat(4, 1fr)", gap: 16, borderTop: "1px dashed var(--phos-dim)", paddingTop: 16 }}>
         <MetaBar label="GENRE" value="PARANORMAL · GEOLOC" />
         <MetaBar label="MODE" value="SOLO · ASYNC PVP" />
         <MetaBar label="PLATFORM" value="iOS · 2026" />
@@ -108,7 +108,7 @@ function CoreLoop() {
   return (
     <div style={{ marginTop: 60 }}>
       <SectionHeader kicker="— CORE LOOP" title="HOW TO PLAY" />
-      <div style={{ display: "grid", gridTemplateColumns: "repeat(4, 1fr)", gap: 16, marginTop: 24 }}>
+      <div className="grid-responsive-4" style={{ display: "grid", gridTemplateColumns: "repeat(4, 1fr)", gap: 16, marginTop: 24 }}>
         {steps.map((s, i) => (
           <div key={i} className="hud-frame" style={{ padding: 18, position: "relative", minHeight: 180 }}>
             <div className="font-heavy" style={{ fontSize: 56, color: "var(--phos-dim)", lineHeight: 1, position: "absolute", top: 10, right: 14, opacity: 0.7 }}>
@@ -125,7 +125,7 @@ function CoreLoop() {
                 position: "absolute", right: -20, top: "50%", transform: "translateY(-50%)",
                 color: "var(--phos)", fontFamily: "'Press Start 2P', monospace", fontSize: 14, zIndex: 2,
                 textShadow: "0 0 6px rgba(57,255,122,0.6)",
-              }}>▶</div>
+              }} className="step-arrow">▶</div>
             )}
           </div>
         ))}
@@ -149,7 +149,7 @@ function GhostCards() {
       <div className="font-mono" style={{ color: "var(--bone)", fontSize: 20, maxWidth: 640, marginBottom: 22 }}>
         Every ghost is a persistent character. They remember you, react to how you treat them, and their mood shifts over time.
       </div>
-      <div style={{ display: "grid", gridTemplateColumns: "repeat(3, 1fr)", gap: 18 }}>
+      <div className="grid-responsive-3" style={{ display: "grid", gridTemplateColumns: "repeat(3, 1fr)", gap: 18 }}>
         {ghosts.map((g, i) => <GhostCard key={i} ghost={g} idx={i} />)}
       </div>
     </div>
@@ -245,7 +245,7 @@ function GameFeatures() {
   return (
     <div style={{ marginTop: 70 }}>
       <SectionHeader kicker="— FEATURES" title="INSTRUCTION MANUAL" />
-      <div style={{ display: "grid", gridTemplateColumns: "repeat(3, 1fr)", gap: 16, marginTop: 22 }}>
+      <div className="grid-responsive-3" style={{ display: "grid", gridTemplateColumns: "repeat(3, 1fr)", gap: 16, marginTop: 22 }}>
         {features.map((f, i) => (
           <div key={i} className="hud-frame" style={{ padding: 18, minHeight: 170 }}>
             <div style={{ display: "flex", alignItems: "baseline", gap: 12, marginBottom: 10 }}>
@@ -343,7 +343,7 @@ function CityMap() {
 ========================================================= */
 function StorySection() {
   return (
-    <div style={{ marginTop: 70, display: "grid", gridTemplateColumns: "1.1fr 1fr", gap: 20 }}>
+    <div className="grid-responsive-2" style={{ marginTop: 70, display: "grid", gridTemplateColumns: "1.1fr 1fr", gap: 20 }}>
       <div className="hud-frame" style={{ padding: "24px 26px" }}>
         <div className="font-pixel" style={{ fontSize: 11, color: "var(--amber)", letterSpacing: "0.25em", marginBottom: 14 }}>
           ◆ THE PITCH
@@ -392,12 +392,12 @@ function StatLine({ num, body, last }) {
 ========================================================= */
 function ApparishSpecs() {
   return (
-    <div style={{ marginTop: 60, display: "grid", gridTemplateColumns: "2fr 1fr", gap: 18 }}>
+    <div className="grid-responsive-2" style={{ marginTop: 60, display: "grid", gridTemplateColumns: "2fr 1fr", gap: 18 }}>
       <div className="hud-frame" style={{ padding: 22 }}>
         <div className="font-pixel" style={{ fontSize: 12, color: "var(--phos)", letterSpacing: "0.2em", marginBottom: 18, textShadow: "0 0 4px rgba(57,255,122,0.5)" }}>
           ■ WHAT'S COMING
         </div>
-        <div style={{ display: "grid", gridTemplateColumns: "repeat(3, 1fr)", gap: 14 }}>
+        <div className="grid-responsive-3" style={{ display: "grid", gridTemplateColumns: "repeat(3, 1fr)", gap: 14 }}>
           {[
             { v: "OPEN BETA", body: "Step into the app. Talk to your first ghost." },
             { v: "NEW CITIES", body: "Three more on the map after launch." },

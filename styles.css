@@ -213,3 +213,74 @@ body {
 
 /* Hide during boot */
 .hidden-during-boot { visibility: hidden; }
+
+/* ============ Mobile Responsive ============ */
+@media (max-width: 768px) {
+  html, body { font-size: 18px; }
+
+  /* Nav */
+  .nav-links {
+    gap: 2px !important;
+    overflow-x: auto !important;
+    -webkit-overflow-scrolling: touch;
+    scrollbar-width: none;
+    flex-shrink: 1 !important;
+    min-width: 0 !important;
+  }
+  .nav-links::-webkit-scrollbar { display: none; }
+  .nav-links button {
+    font-size: 8px !important;
+    padding: 6px 8px !important;
+    white-space: nowrap !important;
+  }
+  .nav-player1 { display: none !important; }
+  .nav-logo-text { font-size: 10px !important; }
+
+  /* Grid stacking */
+  .grid-responsive-hero { grid-template-columns: 1fr !important; }
+  .grid-responsive-4 { grid-template-columns: repeat(2, 1fr) !important; }
+  .grid-responsive-3 { grid-template-columns: 1fr !important; }
+  .grid-responsive-2 { grid-template-columns: 1fr !important; }
+  .grid-responsive-shelf {
+    grid-template-columns: 1fr !important;
+    gap: 30px !important;
+    justify-items: center !important;
+  }
+  .grid-responsive-dialogue {
+    grid-template-columns: 1fr !important;
+    text-align: center !important;
+  }
+
+  /* Footer */
+  .footer-grid {
+    grid-template-columns: 1fr !important;
+    text-align: center !important;
+    gap: 16px !important;
+  }
+  .footer-grid > * { text-align: center !important; }
+
+  /* HUD stats */
+  .hud-stats {
+    flex-wrap: wrap !important;
+    gap: 12px 20px !important;
+    justify-content: center !important;
+  }
+
+  /* Step arrows between cards */
+  .step-arrow { display: none !important; }
+
+  /* Title overflow */
+  .apparish-title { white-space: normal !important; }
+
+  /* Cartridge scaling for mobile */
+  .cart-scale-mobile { transform: scale(0.7); transform-origin: center top; }
+
+  /* Buttons */
+  .btn-retro { font-size: 10px !important; padding: 10px 14px !important; }
+}
+
+@media (max-width: 480px) {
+  .grid-responsive-4 { grid-template-columns: 1fr !important; }
+  .cart-scale-mobile { transform: scale(0.6); transform-origin: center top; }
+  .nav-links button { font-size: 7px !important; padding: 5px 6px !important; }
+}

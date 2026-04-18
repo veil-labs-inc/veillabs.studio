@@ -224,6 +224,77 @@ body {
 /* Hide during boot */
 .hidden-during-boot { visibility: hidden; }
 
+/* ============ Mobile Responsive ============ */
+@media (max-width: 768px) {
+  html, body { font-size: 18px; }
+
+  /* Nav */
+  .nav-links {
+    gap: 2px !important;
+    overflow-x: auto !important;
+    -webkit-overflow-scrolling: touch;
+    scrollbar-width: none;
+    flex-shrink: 1 !important;
+    min-width: 0 !important;
+  }
+  .nav-links::-webkit-scrollbar { display: none; }
+  .nav-links button {
+    font-size: 8px !important;
+    padding: 6px 8px !important;
+    white-space: nowrap !important;
+  }
+  .nav-player1 { display: none !important; }
+  .nav-logo-text { font-size: 10px !important; }
+
+  /* Grid stacking */
+  .grid-responsive-hero { grid-template-columns: 1fr !important; }
+  .grid-responsive-4 { grid-template-columns: repeat(2, 1fr) !important; }
+  .grid-responsive-3 { grid-template-columns: 1fr !important; }
+  .grid-responsive-2 { grid-template-columns: 1fr !important; }
+  .grid-responsive-shelf {
+    grid-template-columns: 1fr !important;
+    gap: 30px !important;
+    justify-items: center !important;
+  }
+  .grid-responsive-dialogue {
+    grid-template-columns: 1fr !important;
+    text-align: center !important;
+  }
+
+  /* Footer */
+  .footer-grid {
+    grid-template-columns: 1fr !important;
+    text-align: center !important;
+    gap: 16px !important;
+  }
+  .footer-grid > * { text-align: center !important; }
+
+  /* HUD stats */
+  .hud-stats {
+    flex-wrap: wrap !important;
+    gap: 12px 20px !important;
+    justify-content: center !important;
+  }
+
+  /* Step arrows between cards */
+  .step-arrow { display: none !important; }
+
+  /* Title overflow */
+  .apparish-title { white-space: normal !important; }
+
+  /* Cartridge scaling for mobile */
+  .cart-scale-mobile { transform: scale(0.7); transform-origin: center top; }
+
+  /* Buttons */
+  .btn-retro { font-size: 10px !important; padding: 10px 14px !important; }
+}
+
+@media (max-width: 480px) {
+  .grid-responsive-4 { grid-template-columns: 1fr !important; }
+  .cart-scale-mobile { transform: scale(0.6); transform-origin: center top; }
+  .nav-links button { font-size: 7px !important; padding: 5px 6px !important; }
+}
+
 </style>
 </head>
 <body>
@@ -672,11 +743,11 @@ function Nav({ page, setPage }) {
     }}>
       <button onClick={() => setPage("home")} style={{ background: "none", border: "none", cursor: "pointer", display: "flex", alignItems: "center", gap: 10 }}>
         <VeilLogo size={26} />
-        <div style={{ fontFamily: "'Press Start 2P', monospace", fontSize: 12, color: "var(--phos)", letterSpacing: "0.15em", textShadow: "0 0 6px rgba(57,255,122,0.5)" }}>
+        <div className="nav-logo-text" style={{ fontFamily: "'Press Start 2P', monospace", fontSize: 12, color: "var(--phos)", letterSpacing: "0.15em", textShadow: "0 0 6px rgba(57,255,122,0.5)" }}>
           VEIL LABS
         </div>
       </button>
-      <div style={{ display: "flex", gap: 4, alignItems: "center" }}>
+      <div className="nav-links" style={{ display: "flex", gap: 4, alignItems: "center" }}>
         {items.map(([label, key]) => (
           <button
             key={key}
@@ -698,7 +769,7 @@ function Nav({ page, setPage }) {
           </button>
         ))}
       </div>
-      <div className="font-mono" style={{ color: "var(--phos)", fontSize: 14, letterSpacing: "0.2em", opacity: 0.75 }}>
+      <div className="font-mono nav-player1" style={{ color: "var(--phos)", fontSize: 14, letterSpacing: "0.2em", opacity: 0.75 }}>
         <span className="cursor">PLAYER 1</span>
       </div>
     </nav>
@@ -767,7 +838,7 @@ function Hero({ setPage, colorway }) {
         pointerEvents: "none",
       }} />
 
-      <div style={{ display: "grid", gridTemplateColumns: "1.3fr 1fr", gap: 30, alignItems: "center", position: "relative", zIndex: 1 }}>
+      <div className="grid-responsive-hero" style={{ display: "grid", gridTemplateColumns: "1.3fr 1fr", gap: 30, alignItems: "center", position: "relative", zIndex: 1 }}>
         <div>
           <div className="font-pixel" style={{ fontSize: 10, color: "var(--amber)", letterSpacing: "0.3em", marginBottom: 18 }}>
             ▲ VEIL LABS · EST. 2025
@@ -803,14 +874,14 @@ function Hero({ setPage, colorway }) {
         </div>
 
         <div style={{ display: "flex", justifyContent: "center", alignItems: "center" }}>
-          <div className="float">
+          <div className="float cart-scale-mobile">
             <Cartridge colorway={colorway} size={0.95} />
           </div>
         </div>
       </div>
 
       {/* HUD strip */}
-      <div style={{
+      <div className="hud-stats" style={{
         marginTop: 30,
         display: "flex", justifyContent: "space-between", alignItems: "center",
         borderTop: "1px dashed var(--phos-dim)",
@@ -859,7 +930,7 @@ function CornerBrackets() {
 ========================================================= */
 function MissionStrip() {
   return (
-    <div style={{ marginTop: 60, display: "grid", gridTemplateColumns: "repeat(3, 1fr)", gap: 18 }}>
+    <div className="grid-responsive-3" style={{ marginTop: 60, display: "grid", gridTemplateColumns: "repeat(3, 1fr)", gap: 18 }}>
       {[
         {
           kicker: "01 / MISSION",
@@ -945,7 +1016,7 @@ function Shelf({ setPage, colorway, preview = false }) {
         position: "relative",
       }}>
         <CornerBrackets />
-        <div style={{ display: "grid", gridTemplateColumns: "repeat(3, 1fr)", gap: 24, alignItems: "end" }}>
+        <div className="grid-responsive-shelf" style={{ display: "grid", gridTemplateColumns: "repeat(3, 1fr)", gap: 24, alignItems: "end" }}>
           {slots.map((s, i) => (
             <SlotItem key={i} slot={s} onClick={s.type === "cart" ? () => setPage("apparish") : null} />
           ))}
@@ -1046,7 +1117,7 @@ function CartCaption({ slot, dimmed }) {
 function PlayerOneDialogue() {
   return (
     <div style={{ marginTop: 70 }}>
-      <div className="hud-frame" style={{ padding: "22px 24px", display: "grid", gridTemplateColumns: "auto 1fr", gap: 20, alignItems: "center" }}>
+      <div className="hud-frame grid-responsive-dialogue" style={{ padding: "22px 24px", display: "grid", gridTemplateColumns: "auto 1fr", gap: 20, alignItems: "center" }}>
         <div style={{
           width: 72, height: 72, border: "2px solid var(--phos)",
           background: "#0a1510",
@@ -1078,7 +1149,7 @@ function CartridgesPage({ setPage, colorway }) {
         Each Veil Labs game is released as a cartridge. One is shipping. More are in the vault. Click a cartridge to learn more — hover to tilt, click the shipped cart to flip the back.
       </div>
       <Shelf setPage={setPage} colorway={colorway} />
-      <div style={{ marginTop: 40, display: "grid", gridTemplateColumns: "1fr 1fr", gap: 18 }}>
+      <div className="grid-responsive-2" style={{ marginTop: 40, display: "grid", gridTemplateColumns: "1fr 1fr", gap: 18 }}>
         <RomSpec title="HARDWARE" rows={[
           ["PLATFORM", "iOS · iPadOS"],
           ["NEURAL", "APPLE SILICON"],
@@ -1158,7 +1229,7 @@ function ApparishHero({ colorway }) {
         animation: "scan-sweep 6s linear infinite",
       }} />
 
-      <div style={{ display: "grid", gridTemplateColumns: "minmax(0, 1.4fr) minmax(280px, 1fr)", gap: 30, alignItems: "center", position: "relative", zIndex: 1 }}>
+      <div className="grid-responsive-hero" style={{ display: "grid", gridTemplateColumns: "minmax(0, 1.4fr) minmax(280px, 1fr)", gap: 30, alignItems: "center", position: "relative", zIndex: 1 }}>
         <div style={{ minWidth: 0 }}>
           <div className="font-pixel" style={{ fontSize: 10, color: "var(--amber)", letterSpacing: "0.3em", marginBottom: 14 }}>
             ▲ VL-001 · NOW LOADING
@@ -1171,7 +1242,7 @@ function ApparishHero({ colorway }) {
             textShadow: "0 0 18px rgba(57,255,122,0.7), 0 5px 0 #0a1a10",
             letterSpacing: "0.02em",
             whiteSpace: "nowrap",
-          }}>
+          }} className="apparish-title">
             APPARISH
           </div>
           <div className="font-pixel" style={{ fontSize: 12, color: "var(--phos)", letterSpacing: "0.25em", marginTop: 8, opacity: 0.85 }}>
@@ -1192,14 +1263,14 @@ function ApparishHero({ colorway }) {
         </div>
 
         <div style={{ display: "flex", justifyContent: "center", alignItems: "center", minWidth: 0 }}>
-          <div className="float" style={{ flexShrink: 0 }}>
+          <div className="float cart-scale-mobile" style={{ flexShrink: 0 }}>
             <Cartridge colorway={colorway} size={0.9} />
           </div>
         </div>
       </div>
 
       {/* HP/MP bars reframed as game meta */}
-      <div style={{ marginTop: 32, display: "grid", gridTemplateColumns: "repeat(4, 1fr)", gap: 16, borderTop: "1px dashed var(--phos-dim)", paddingTop: 16 }}>
+      <div className="grid-responsive-4" style={{ marginTop: 32, display: "grid", gridTemplateColumns: "repeat(4, 1fr)", gap: 16, borderTop: "1px dashed var(--phos-dim)", paddingTop: 16 }}>
         <MetaBar label="GENRE" value="PARANORMAL · GEOLOC" />
         <MetaBar label="MODE" value="SOLO · ASYNC PVP" />
         <MetaBar label="PLATFORM" value="iOS · 2026" />
@@ -1235,7 +1306,7 @@ function CoreLoop() {
   return (
     <div style={{ marginTop: 60 }}>
       <SectionHeader kicker="— CORE LOOP" title="HOW TO PLAY" />
-      <div style={{ display: "grid", gridTemplateColumns: "repeat(4, 1fr)", gap: 16, marginTop: 24 }}>
+      <div className="grid-responsive-4" style={{ display: "grid", gridTemplateColumns: "repeat(4, 1fr)", gap: 16, marginTop: 24 }}>
         {steps.map((s, i) => (
           <div key={i} className="hud-frame" style={{ padding: 18, position: "relative", minHeight: 180 }}>
             <div className="font-heavy" style={{ fontSize: 56, color: "var(--phos-dim)", lineHeight: 1, position: "absolute", top: 10, right: 14, opacity: 0.7 }}>
@@ -1252,7 +1323,7 @@ function CoreLoop() {
                 position: "absolute", right: -20, top: "50%", transform: "translateY(-50%)",
                 color: "var(--phos)", fontFamily: "'Press Start 2P', monospace", fontSize: 14, zIndex: 2,
                 textShadow: "0 0 6px rgba(57,255,122,0.6)",
-              }}>▶</div>
+              }} className="step-arrow">▶</div>
             )}
           </div>
         ))}
@@ -1276,7 +1347,7 @@ function GhostCards() {
       <div className="font-mono" style={{ color: "var(--bone)", fontSize: 20, maxWidth: 640, marginBottom: 22 }}>
         Every ghost is a persistent character. They remember you, react to how you treat them, and their mood shifts over time.
       </div>
-      <div style={{ display: "grid", gridTemplateColumns: "repeat(3, 1fr)", gap: 18 }}>
+      <div className="grid-responsive-3" style={{ display: "grid", gridTemplateColumns: "repeat(3, 1fr)", gap: 18 }}>
         {ghosts.map((g, i) => <GhostCard key={i} ghost={g} idx={i} />)}
       </div>
     </div>
@@ -1372,7 +1443,7 @@ function GameFeatures() {
   return (
     <div style={{ marginTop: 70 }}>
       <SectionHeader kicker="— FEATURES" title="INSTRUCTION MANUAL" />
-      <div style={{ display: "grid", gridTemplateColumns: "repeat(3, 1fr)", gap: 16, marginTop: 22 }}>
+      <div className="grid-responsive-3" style={{ display: "grid", gridTemplateColumns: "repeat(3, 1fr)", gap: 16, marginTop: 22 }}>
         {features.map((f, i) => (
           <div key={i} className="hud-frame" style={{ padding: 18, minHeight: 170 }}>
             <div style={{ display: "flex", alignItems: "baseline", gap: 12, marginBottom: 10 }}>
@@ -1470,7 +1541,7 @@ function CityMap() {
 ========================================================= */
 function StorySection() {
   return (
-    <div style={{ marginTop: 70, display: "grid", gridTemplateColumns: "1.1fr 1fr", gap: 20 }}>
+    <div className="grid-responsive-2" style={{ marginTop: 70, display: "grid", gridTemplateColumns: "1.1fr 1fr", gap: 20 }}>
       <div className="hud-frame" style={{ padding: "24px 26px" }}>
         <div className="font-pixel" style={{ fontSize: 11, color: "var(--amber)", letterSpacing: "0.25em", marginBottom: 14 }}>
           ◆ THE PITCH
@@ -1519,12 +1590,12 @@ function StatLine({ num, body, last }) {
 ========================================================= */
 function ApparishSpecs() {
   return (
-    <div style={{ marginTop: 60, display: "grid", gridTemplateColumns: "2fr 1fr", gap: 18 }}>
+    <div className="grid-responsive-2" style={{ marginTop: 60, display: "grid", gridTemplateColumns: "2fr 1fr", gap: 18 }}>
       <div className="hud-frame" style={{ padding: 22 }}>
         <div className="font-pixel" style={{ fontSize: 12, color: "var(--phos)", letterSpacing: "0.2em", marginBottom: 18, textShadow: "0 0 4px rgba(57,255,122,0.5)" }}>
           ■ WHAT'S COMING
         </div>
-        <div style={{ display: "grid", gridTemplateColumns: "repeat(3, 1fr)", gap: 14 }}>
+        <div className="grid-responsive-3" style={{ display: "grid", gridTemplateColumns: "repeat(3, 1fr)", gap: 14 }}>
           {[
             { v: "OPEN BETA", body: "Step into the app. Talk to your first ghost." },
             { v: "NEW CITIES", body: "Three more on the map after launch." },
@@ -1571,7 +1642,7 @@ function PressPage() {
         For press inquiries, beta invites, city launch coordination, or paranormal leads, reach the studio directly.
       </div>
 
-      <div style={{ display: "grid", gridTemplateColumns: "1.2fr 1fr", gap: 20 }}>
+      <div className="grid-responsive-2" style={{ display: "grid", gridTemplateColumns: "1.2fr 1fr", gap: 20 }}>
         <div className="hud-frame" style={{ padding: 24 }}>
           <div className="font-pixel" style={{ fontSize: 11, color: "var(--phos)", letterSpacing: "0.2em", textShadow: "0 0 4px rgba(57,255,122,0.5)", marginBottom: 16 }}>
             ■ DIRECT LINE
@@ -1600,7 +1671,7 @@ function PressPage() {
         </div>
       </div>
 
-      <div style={{ marginTop: 40, display: "grid", gridTemplateColumns: "repeat(3, 1fr)", gap: 16 }}>
+      <div className="grid-responsive-3" style={{ marginTop: 40, display: "grid", gridTemplateColumns: "repeat(3, 1fr)", gap: 16 }}>
         <QuickFact label="FOUNDED" value="2025" />
         <QuickFact label="HEADQUARTERS" value="REMOTE · US" />
         <QuickFact label="FIRST TITLE" value="APPARISH (2026)" />
@@ -1719,7 +1790,7 @@ function Footer() {
       borderTop: "2px solid var(--phos-dim)",
       background: "#050806",
     }}>
-      <div style={{ maxWidth: 1280, margin: "0 auto", display: "grid", gridTemplateColumns: "auto 1fr auto", gap: 20, alignItems: "center" }}>
+      <div className="footer-grid" style={{ maxWidth: 1280, margin: "0 auto", display: "grid", gridTemplateColumns: "auto 1fr auto", gap: 20, alignItems: "center" }}>
         <div style={{ display: "flex", gap: 10, alignItems: "center" }}>
           <VeilLogo size={30} />
           <div>
