@@ -62,7 +62,7 @@ function Cartridge({ colorway = "ghost-green", size = 1, flippable = true, onIns
 
   return (
     <div
-      style={{ perspective: `${1400 * size}px`, display: "inline-block", cursor: flippable ? "pointer" : "default" }}
+      style={{ perspective: `${1400 * size}px`, display: "inline-block", cursor: flippable ? "pointer" : "default", filter: `drop-shadow(0 25px 30px ${cw.shadow})` }}
       onMouseMove={handleMove}
       onMouseLeave={handleLeave}
       onClick={() => flippable && setFlipped(f => !f)}
@@ -73,17 +73,13 @@ function Cartridge({ colorway = "ghost-green", size = 1, flippable = true, onIns
           width: W, height: H,
           position: "relative",
           transformStyle: "preserve-3d",
-          transform: `rotateX(${tilted.x}deg) rotateY(${tilted.y}deg)`,
-          transition: "transform 0.55s cubic-bezier(.2,.8,.2,1)",
-          filter: `drop-shadow(0 25px 30px ${cw.shadow})`,
+          transform: `rotateX(${tilted.x}deg) rotateY(${flipped ? 180 + tilted.y : tilted.y}deg)`,
+          transition: "transform 0.65s cubic-bezier(.2,.8,.2,1)",
         }}
       >
-        {/* FRONT or BACK — render one at a time to avoid backface-visibility quirks */}
-        {!flipped ? (
-          <CartFace front cw={cw} W={W} H={H} D={D} label={label} subtitle={subtitle} />
-        ) : (
-          <CartFace back cw={cw} W={W} H={H} D={D} />
-        )}
+        {/* Both faces rendered — parent rotateY handles the flip */}
+        <CartFace front cw={cw} W={W} H={H} D={D} label={label} subtitle={subtitle} />
+        <CartFace back cw={cw} W={W} H={H} D={D} />
         {/* LEFT SIDE */}
         <div style={{
           position: "absolute",
@@ -143,10 +139,11 @@ function CartFace({ front, back, cw, W, H, D, label, subtitle }) {
       position: "absolute", top: 0, left: 0, width: W, height: H,
       transform: `${rotation} translateZ(${D/2}px)`,
       backfaceVisibility: "hidden",
+      WebkitBackfaceVisibility: "hidden",
+      transformStyle: "preserve-3d",
       background: cw.body,
       border: `2px solid ${cw.bodyEdge}`,
       borderRadius: "10px 10px 4px 4px",
-      overflow: "hidden",
       boxShadow: cw.translucent
         ? `inset 0 0 80px ${cw.plastic}, inset 0 6px 0 rgba(255,255,255,0.15)`
         : `inset 0 6px 0 rgba(255,255,255,0.1), inset 0 -6px 0 rgba(0,0,0,0.3)`,
@@ -271,7 +268,7 @@ function CartBack({ cw }) {
     <div style={{
       position: "absolute", top: "14%", left: "10%", right: "10%", bottom: "8%",
       padding: 10,
-      display: "flex", flexDirection: "column", gap: 6,
+      display: "flex", flexDirection: "column", gap: 8,
       color: cw.translucent ? "rgba(215,229,210,0.7)" : "rgba(255,255,255,0.75)",
       fontFamily: "'VT323', monospace",
       fontSize: 11,
@@ -282,20 +279,21 @@ function CartBack({ cw }) {
       }}>
         VL-001 · APPARISH
       </div>
-      <div style={{ lineHeight: 1.15 }}>
-        A paranormal reality game. Players physically explore haunted places and uncover AI-generated spirits tied to local history and folklore.
+      <div style={{ lineHeight: 1.15, fontSize: 12 }}>
+        A paranormal investigation game. Walk to real haunted places. Capture ghosts with your camera. Talk to them with your voice.
       </div>
       <div style={{
-        marginTop: "auto",
-        border: "1px solid currentColor",
-        padding: 5,
-        fontSize: 9,
-        lineHeight: 1.2,
+        marginTop: 6,
+        padding: "8px 6px",
+        border: "1px solid #39ff7a44",
+        background: "rgba(57,255,122,0.06)",
+        textAlign: "center",
       }}>
-        <div style={{ fontFamily: "'Press Start 2P', monospace", fontSize: 6, marginBottom: 3, letterSpacing: "0.15em" }}>WARNING</div>
-        Contains persistent characters who remember you. Neglect at your own risk.
+        <div style={{ fontFamily: "'Press Start 2P', monospace", fontSize: 7, color: "#ffb020", letterSpacing: "0.2em", marginBottom: 4 }}>OPEN BETA</div>
+        <div style={{ fontFamily: "'Press Start 2P', monospace", fontSize: 10, color: "#39ff7a", letterSpacing: "0.1em" }}>2026</div>
+        <div style={{ fontSize: 11, marginTop: 4, opacity: 0.7, letterSpacing: "0.15em" }}>FREE ON iOS</div>
       </div>
-      <div style={{ display: "flex", justifyContent: "space-between", fontSize: 10, marginTop: 2 }}>
+      <div style={{ display: "flex", justifyContent: "space-between", fontSize: 10, marginTop: "auto" }}>
         <span>© 2026 VEIL LABS</span>
         <span>MADE IN USA</span>
       </div>

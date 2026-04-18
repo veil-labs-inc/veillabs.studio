@@ -7,8 +7,7 @@ const { useState: useStateS, useEffect: useEffectS, useRef: useRefS } = React;
 function Nav({ page, setPage }) {
   const items = [
     ["HOME", "home"],
-    ["CARTRIDGES", "cartridges"],
-    ["APPARISH", "apparish"],
+    ["GAMES", "cartridges"],
     ["PRESS", "press"],
   ];
   return (
@@ -133,7 +132,7 @@ function Hero({ setPage, colorway }) {
             WE MAKE<br/>GAMES THAT<br/>SLAP.
           </h1>
           <div className="font-mono" style={{ fontSize: 22, color: "var(--bone)", marginTop: 20, maxWidth: 540, lineHeight: 1.25 }}>
-            Veil Labs is a studio building immersive, AI-native games — where every character remembers you and the world you play in is the one outside your window.
+            Veil Labs is a studio building immersive games — where every character remembers you and the world you play in is the one outside your window.
           </div>
           <div style={{ display: "flex", gap: 14, marginTop: 28, flexWrap: "wrap" }}>
             <button
@@ -144,7 +143,7 @@ function Hero({ setPage, colorway }) {
               ▶ PRESS START
             </button>
             <button className="btn-retro" onClick={() => setPage("cartridges")} style={{ color: "var(--bone)", borderColor: "var(--bone-dim)" }}>
-              ◉ VIEW CARTRIDGES
+              ◉ VIEW GAMES
             </button>
           </div>
           <div className="font-mono" style={{ marginTop: 20, fontSize: 16, color: "var(--bone-dim)", letterSpacing: "0.1em" }}>
@@ -213,18 +212,18 @@ function MissionStrip() {
       {[
         {
           kicker: "01 / MISSION",
-          title: "BUILD WORLDS THAT REACH BACK",
-          body: "We build games where the characters know you're there. Every NPC has memory, voice, and agency. You leave a mark; they keep score.",
+          title: "CHARACTERS THAT REMEMBER YOU",
+          body: "Our games have characters with memory, voice, and personality. They know who you are. They react to how you treat them. They keep score.",
         },
         {
           kicker: "02 / METHOD",
-          title: "AI ON-DEVICE. ALWAYS.",
-          body: "Ghost generation, voice, imagery, and story writing run locally on Apple's neural engine. No per-call costs. No server lag. Real autonomy at scale.",
+          title: "EVERY ENCOUNTER IS UNIQUE",
+          body: "Nothing is pre-written. Every character, every story, every interaction is generated in the moment. You'll never have the same experience twice.",
         },
         {
           kicker: "03 / CANON",
-          title: "THE REAL WORLD IS THE LEVEL",
-          body: "Our games use real geography, real folklore, real history. Your neighborhood is the map. The haunted house down the street is a boss fight.",
+          title: "THE REAL WORLD IS THE GAME",
+          body: "We don't build fantasy maps. We use real places, real history, and real geography. The world you already live in is the one you play in.",
         },
       ].map((card, i) => (
         <div key={i} className="hud-frame" style={{ padding: 18, minHeight: 200, position: "relative" }}>
@@ -249,9 +248,9 @@ function MissionStrip() {
 function ShelfPreview({ setPage, colorway }) {
   return (
     <div style={{ marginTop: 70 }}>
-      <SectionHeader kicker="— LIBRARY" title="THE CARTRIDGE SHELF" />
+      <SectionHeader kicker="— LIBRARY" title="OUR GAMES" />
       <div style={{ fontFamily: "'VT323', monospace", color: "var(--bone)", fontSize: 20, maxWidth: 620, marginBottom: 28 }}>
-        Each Veil Labs game ships as a cartridge. One on the shelf, more in development. Click to inspect.
+        One title shipping. More in development. Click to learn more.
       </div>
       <Shelf setPage={setPage} colorway={colorway} preview />
     </div>
@@ -312,7 +311,7 @@ function Shelf({ setPage, colorway, preview = false }) {
           fontFamily: "'VT323', monospace", fontSize: 14, color: "var(--bone-dim)",
           textAlign: "center", marginTop: 10, letterSpacing: "0.2em",
         }}>
-          — VEIL LABS CATALOGUE · 01 OF 01 SHIPPING ·  03 SLOTS TOTAL —
+          — VEIL LABS · 01 OF 01 SHIPPING ·  03 TITLES TOTAL —
         </div>
       </div>
     </div>
@@ -423,20 +422,20 @@ function PlayerOneDialogue() {
 function CartridgesPage({ setPage, colorway }) {
   return (
     <div style={{ maxWidth: 1280, margin: "0 auto", padding: "30px 24px 80px" }}>
-      <SectionHeader kicker="— CATALOGUE" title="CARTRIDGES" />
+      <SectionHeader kicker="— CATALOGUE" title="OUR GAMES" />
       <div className="font-mono" style={{ color: "var(--bone)", fontSize: 20, maxWidth: 720, marginBottom: 30 }}>
-        Each Veil Labs game is released as a cartridge. One is shipping. More are in the vault. Click a cartridge to learn more — hover to tilt, click the shipped cart to flip the back.
+        One game is shipping. More are in the vault. Click to learn more.
       </div>
       <Shelf setPage={setPage} colorway={colorway} />
       <div className="grid-responsive-2" style={{ marginTop: 40, display: "grid", gridTemplateColumns: "1fr 1fr", gap: 18 }}>
         <RomSpec title="HARDWARE" rows={[
           ["PLATFORM", "iOS · iPadOS"],
-          ["NEURAL", "APPLE SILICON"],
-          ["STORAGE", "ON-DEVICE"],
+          ["ENGINE", "INSTANT"],
+          ["STORAGE", "YOUR PHONE"],
           ["NETWORK", "OPTIONAL"],
         ]} />
-        <RomSpec title="CARTRIDGE SPEC" rows={[
-          ["FORMAT", "VL-ROM / 64MBit"],
+        <RomSpec title="GAME SPEC" rows={[
+          ["FORMAT", "iOS APP"],
           ["REGION", "WORLDWIDE"],
           ["SAVE DATA", "PERSISTENT"],
           ["MULTIPLAYER", "ASYNC · STEAL"],
