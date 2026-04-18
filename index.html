@@ -1940,9 +1940,19 @@ const TWEAK_DEFAULTS = /*EDITMODE-BEGIN*/{
   "phosphor": "#39ff7a",
   "phosphorDim": "#1a4a2a"
 }/*EDITMODE-END*/;
+const VALID_PAGES=["home","cartridges","apparish","press"];
+function pageFromPath(){
+  // Check for 404.html redirect query param first
+  const params=new URLSearchParams(window.location.search);
+  const redirected=params.get("p");
+  if(redirected){const p=redirected.replace(/^\//,"").replace(/\/$/,"").toLowerCase();const page=VALID_PAGES.includes(p)?p:"home";window.history.replaceState({page},"",page==="home"?"/":"/"+page);return page;}
+  const p=window.location.pathname.replace(/^\//,"").replace(/\/$/,"").toLowerCase();return VALID_PAGES.includes(p)?p:"home";
+}
 function App(){
   const [booted,setBooted]=useStateMain(()=>sessionStorage.getItem("vl-booted")==="1");
-  const [page,setPage]=useStateMain("home");
+  const [page,setPage]=useStateMain(pageFromPath);
+  const navigate=(p)=>{const url=p==="home"?"/":"/"+p;window.history.pushState({page:p},"",url);setPage(p);};
+  useEffectMain(()=>{const onPop=()=>setPage(pageFromPath());window.addEventListener("popstate",onPop);return()=>window.removeEventListener("popstate",onPop);},[]);
   const [tweaksVisible,setTweaksVisible]=useStateMain(false);
   const [state,setState]=useStateMain(()=>{try{return {...TWEAK_DEFAULTS,...JSON.parse(localStorage.getItem("vl-tweaks")||"{}")};}catch{return TWEAK_DEFAULTS;}});
   const [bootKey,setBootKey]=useStateMain(0);
@@ -1954,7 +1964,7 @@ function App(){
   useEffectMain(()=>{window.parent.postMessage({type:"__edit_mode_set_keys",edits:{colorway:state.colorway,crtIntensity:state.crtIntensity,scanlineOpacity:state.scanlineOpacity,phosphor:state.phosphor,phosphorDim:state.phosphorDim}},"*");},[state.colorway,state.crtIntensity,state.scanlineOpacity,state.phosphor,state.phosphorDim]);
   const doneBoot=()=>{setBooted(true);sessionStorage.setItem("vl-booted","1");};
   const Page={home:HomePage,cartridges:CartridgesPage,apparish:ApparishPage,press:PressPage}[page]||HomePage;
-  return (<div>{!booted&&<BootSequence key={bootKey} onDone={doneBoot}/>}<div style={{visibility:booted?"visible":"hidden"}}><Nav page={page} setPage={setPage}/><Page setPage={setPage} colorway={state.colorway}/><Footer/></div><TweaksPanel state={state} setState={setState} visible={tweaksVisible}/></div>);
+  return (<div>{!booted&&<BootSequence key={bootKey} onDone={doneBoot}/>}<div style={{visibility:booted?"visible":"hidden"}}><Nav page={page} setPage={navigate}/><Page setPage={navigate} colorway={state.colorway}/><Footer/></div><TweaksPanel state={state} setState={setState} visible={tweaksVisible}/></div>);
 }
 ReactDOM.createRoot(document.getElementById("root")).render(<App/>);
 </script>
