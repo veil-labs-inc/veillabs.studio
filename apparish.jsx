@@ -56,11 +56,8 @@ function ApparishHero({ colorway }) {
 
           <div style={{ display: "flex", gap: 12, marginTop: 24, flexWrap: "wrap" }}>
             <a href="https://appari.sh" target="_blank" rel="noreferrer" className="btn-retro" style={{ textDecoration: "none", display: "inline-block" }}>
-              ▶ VISIT APPARI.SH
-            </a>
-            <button className="btn-retro" style={{ color: "var(--bone)", borderColor: "var(--bone-dim)" }}>
               ◉ JOIN BETA
-            </button>
+            </a>
           </div>
         </div>
 
